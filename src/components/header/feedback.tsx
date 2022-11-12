@@ -1,5 +1,5 @@
 import React from 'react'
-import feedbackSvg from '../../assets/icons/header/feedback.svg'
+import feedbackSvg from '../assets/ver-alpha/icons/header/feedback.svg'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { colorThemeActions } from '../../jotai-hooks/colorTheme/action'
 

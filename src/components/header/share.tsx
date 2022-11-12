@@ -1,5 +1,5 @@
 import React from 'react'
-import shareSvg from '../../assets/icons/header/share.svg'
+import shareSvg from '../assets/ver-alpha/icons/header/share.svg'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { colorThemeActions } from '../../jotai-hooks/colorTheme/action'
 

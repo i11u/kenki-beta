@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai'
-import downloadSvg from '../../assets/icons/header/download.svg'
+import downloadSvg from '../assets/ver-alpha/icons/header/download.svg'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { blocksAtom } from '../../jotai-hooks/blocks/atom'
 import { relationsAtom } from '../../jotai-hooks/relations/atom'

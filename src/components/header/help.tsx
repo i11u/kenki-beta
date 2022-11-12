@@ -1,5 +1,5 @@
 import React from 'react'
-import guideSvg from '../../assets/icons/header/help.svg'
+import guideSvg from '../assets/ver-alpha/icons/header/help.svg'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { modeActions } from '../../jotai-hooks/mode/action'
 import { editorConfigActions } from '../../jotai-hooks/editorConfig/action'

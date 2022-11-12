@@ -1,9 +1,9 @@
 import React from 'react'
 import { match } from 'ts-pattern'
 import styled from 'styled-components'
-import normalArrowInward from '../../assets/icons/normal-arrow-inward.svg'
-import normalArrowOutward from '../../assets/icons/normal-arrow-outward.svg'
-import thickArrowOutward from '../../assets/icons/thick-arrow-outward.svg'
+import normalArrowInward from '../assets/ver-alpha/icons/normal-arrow-inward.svg'
+import normalArrowOutward from '../assets/ver-alpha/icons/normal-arrow-outward.svg'
+import thickArrowOutward from '../assets/ver-alpha/icons/thick-arrow-outward.svg'
 import { ContentData } from './sidebarLeft'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 
@@ -31,7 +31,7 @@ const Content = ({ buffer, content, isSelected }: { buffer: string; content: Con
       >
         <use xlinkHref={`${svg}#relation`} />
       </svg>
-      <StyledText style={{ color: colorTheme.textPrimary }}>
+      <StyledText style={{ color: colorTheme.text }}>
         {arr.map((str, index) => {
           if (index === arr.length - 1) {
             return <span>{str}</span>

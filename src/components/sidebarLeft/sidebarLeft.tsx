@@ -80,7 +80,7 @@ const SidebarLeft = () => {
       ref={sidebarRef}
       style={{
         ...style,
-        backgroundColor: colorTheme.sidebar,
+        backgroundColor: colorTheme.sidebarBackground,
         borderRight:
           sidebarLeftIsOpen === true ? `0.5px solid ${separationIsVisible ? colorTheme.border : 'transparent'}` : '',
       }}

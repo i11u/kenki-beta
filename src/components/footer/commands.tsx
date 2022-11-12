@@ -19,7 +19,7 @@ const Commands = ({
     <StyledFlex style={{ backgroundColor: colorTheme.commands }}>
       <StyledCommandTitle
         style={{
-          color: colorTheme.textPrimary,
+          color: colorTheme.text,
           borderBottom: `0.5px solid ${colorTheme.border}`,
         }}
       >

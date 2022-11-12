@@ -26,11 +26,11 @@ const Command = ({
       <StyledText style={{ width: '18%', marginLeft: '2%' }}>
         {nameArr.map((str, index) => {
           if (index === nameArr.length - 1) {
-            return <span style={{ color: isSelected ? 'black' : colorTheme.textPrimary }}>{str}</span>
+            return <span style={{ color: isSelected ? 'black' : colorTheme.text }}>{str}</span>
           }
           return (
             <span>
-              <span style={{ color: isSelected ? 'black' : colorTheme.textPrimary }}>{str}</span>
+              <span style={{ color: isSelected ? 'black' : colorTheme.text }}>{str}</span>
               <span style={{ color: 'red' }}>{buffer}</span>
             </span>
           )
@@ -39,17 +39,17 @@ const Command = ({
       <StyledText style={{ width: '55%' }}>
         {descArr.map((str, index) => {
           if (index === descArr.length - 1) {
-            return <span style={{ color: isSelected ? 'black' : colorTheme.textPrimary }}>{str}</span>
+            return <span style={{ color: isSelected ? 'black' : colorTheme.text }}>{str}</span>
           }
           return (
             <span>
-              <span style={{ color: isSelected ? 'black' : colorTheme.textPrimary }}>{str}</span>
+              <span style={{ color: isSelected ? 'black' : colorTheme.text }}>{str}</span>
               <span style={{ color: 'red' }}>{buffer}</span>
             </span>
           )
         })}
       </StyledText>
-      <StyledText style={{ width: '25%', color: isSelected ? 'black' : colorTheme.textPrimary }}>{shortcut}</StyledText>
+      <StyledText style={{ width: '25%', color: isSelected ? 'black' : colorTheme.text }}>{shortcut}</StyledText>
     </StyledFlex>
   )
 }

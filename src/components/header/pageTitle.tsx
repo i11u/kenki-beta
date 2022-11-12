@@ -27,7 +27,7 @@ const PageTitle = () => {
       style={{
         // backgroundColor: colorTheme.header,
         backgroundColor: 'transparent',
-        color: colorTheme.textSecondary,
+        color: colorTheme.textHighlight,
       }}
       value={title}
       onFocus={(e) => {

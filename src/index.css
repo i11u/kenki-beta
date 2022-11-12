@@ -3,30 +3,29 @@ html {
 }
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: none;
+    overscroll-behavior: none;
     overflow: hidden;
-}
-
-[contenteditable='true']:empty:before {
-    content: attr(placeholder);
-    pointer-events: none;
-    display: block; /* For Firefox */
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+[contenteditable='true']:empty::before {
+    content: attr(placeholder);
+    pointer-events: none;
+    display: block; /* For Firefox */
+}
+
 @keyframes animate-sidebar-1 {
     from {
         width: 0;
     }
+
     to {
         width: 20%;
     }
@@ -36,7 +35,293 @@ code {
     from {
         width: 20%;
     }
+
     to {
         width: 0;
     }
+}
+
+/*
+Variables
+*/
+:root {
+    /*
+    font-size
+    */
+    --section-text-size: 20px;
+    --item-text-size: 16px;
+    --breadcrumb-text-size: 14px;
+    --page-title-text-size: 28px;
+
+    /*
+    z-index
+    */
+    --sidebar-z-index: 1;
+    --pageinfo-z-index: 1;
+    --editor-z-index: 0;
+    --editor-page-z-index: 0;
+    --editor-floatings: 1;
+}
+
+/*
+Global property
+*/
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.display-none {
+    display: none;
+}
+
+/*
+Sidebar styles
+*/
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: auto;
+    min-width: 200px;
+    margin: 0;
+    z-index: var(--sidebar-z-index);
+    padding-top: 20px;
+}
+
+.sidebar-section {
+    margin: 50px 25px 20px;
+    font-size: var(--section-text-size);
+}
+
+.sidebar-item {
+    margin: 10px 35px;
+    font-size: var(--item-text-size);
+    display: flex;
+}
+
+.sidebar-item-icon-container {
+    display: flex;
+}
+
+.sidebar-item-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-item-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: auto 0 auto 10px;
+}
+
+/*
+Pageinfo styles
+*/
+.pageinfo {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: auto;
+    min-width: 200px;
+    margin: 0;
+    z-index: var(--pageinfo-z-index);
+    padding-top: 20px;
+}
+
+/*
+Styles for top level pageinfo elements are identical to those of top level sidebar elements
+This is intended to achieve a unified app design, but may change in the future.
+*/
+.pageinfo-section {
+    margin: 50px 25px 20px;
+    font-size: var(--section-text-size);
+}
+
+.pageinfo-item {
+    margin: 10px 35px;
+    font-size: var(--item-text-size);
+    display: flex;
+}
+
+.pageinfo-item-icon-container {
+    display: flex;
+}
+
+.pageinfo-item-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.pageinfo-item-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: auto 0 auto 10px;
+}
+
+/*
+Editor styles
+*/
+.editor {
+    position: absolute;
+    top: 0;
+    left: auto;
+    height: 100%;
+    width: auto;
+    min-width: 200px;
+    z-index: var(--editor-z-index);
+    overflow: auto;
+    overscroll-behavior: none;
+}
+
+.editor-undo-button {
+    position: sticky;
+    top: 15px;
+    left: 30px;
+    width: 30px;
+    height: 20px;
+    border: none;
+    border-radius: 2px;
+    z-index: var(--editor-floatings);
+}
+
+.editor-undo-button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-redo-button {
+    position: sticky;
+    top: 15px;
+    left: 70px;
+    width: 30px;
+    height: 20px;
+    border: none;
+    border-radius: 2px;
+    z-index: var(--editor-floatings);
+}
+
+.editor-redo-button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-toggle-sidebar-button {
+    position: sticky;
+    top: 15px;
+    left: 110px;
+    width: 30px;
+    height: 20px;
+    border: none;
+    border-radius: 2px;
+    z-index: var(--editor-floatings);
+}
+
+.editor-toggle-sidebar-button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-toggle-pageinfo-button {
+    position: sticky;
+    top: 15px;
+    left: 150px;
+    width: 30px;
+    height: 20px;
+    border: none;
+    border-radius: 2px;
+    z-index: var(--editor-floatings);
+}
+
+.editor-toggle-pageinfo-button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-breadcrumbs {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 200px;
+    height: 20px;
+    font-size: var(--breadcrumb-text-size);
+    z-index: var(--editor-floatings);
+}
+
+.editor-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    width: 2000px;
+    height: 2000px;
+    z-index: var(--editor-page-z-index);
+}
+
+.editor-page-title {
+    position: absolute;
+    top: 80px;
+    left: 60px;
+    z-index: var(--editor-page-z-index);
+}
+
+.editor-page-title-text {
+    font-size: var(--page-title-text-size);
+}
+
+.editor-page-title-underline {
+    width: 200px;
+    height: 1px;
+}
+
+/*
+Toolset styles
+*/
+.toolset {
+    position: fixed;
+    width: auto;
+    height: auto;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--editor-floatings);
+}
+
+.toolset-cursor-tools {
+    width: auto;
+    height: auto;
+    display: flex;
+    gap: 25px;
+}
+
+.toolset-cursor-tools-button {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 4px;
+}
+
+.toolset-cursor-tools-button-hint {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+}
+
+.toolset-cursor-tools-button-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: calc(50% + 2px);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

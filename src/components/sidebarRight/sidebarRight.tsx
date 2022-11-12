@@ -35,7 +35,7 @@ const SidebarRight = () => {
         ref={sidebarRef}
         style={{
           ...style,
-          backgroundColor: colorTheme.sidebar,
+          backgroundColor: colorTheme.sidebarBackground,
           borderLeft:
             sidebarRightIsOpen === true ? `0.5px solid ${separationIsVisible ? colorTheme.border : 'transparent'}` : '',
         }}
@@ -43,17 +43,17 @@ const SidebarRight = () => {
       {mode === 'SETTINGS' ? (
         <StyledFlex style={{ width: `${window.innerWidth * 0.2}px` }}>
           <StyledFlex2>
-            <StyledTitle style={{ color: colorTheme.textPrimary }}>Settings</StyledTitle>
-            <StyledLabel style={{ color: colorTheme.textSecondary }}>Global</StyledLabel>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>Color theme (⌘+L): {colorTheme.name}</StyledItem>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>
+            <StyledTitle style={{ color: colorTheme.text }}>Settings</StyledTitle>
+            <StyledLabel style={{ color: colorTheme.textHighlight }}>Global</StyledLabel>
+            <StyledItem style={{ color: colorTheme.text }}>Color theme (⌘+L): {colorTheme.type}</StyledItem>
+            <StyledItem style={{ color: colorTheme.text }}>
               Separation (⌘+S): {separationIsVisible ? 'on' : 'off'}
             </StyledItem>
-            <StyledLabel style={{ color: colorTheme.textSecondary }}>Editor</StyledLabel>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>
+            <StyledLabel style={{ color: colorTheme.textHighlight }}>Editor</StyledLabel>
+            <StyledItem style={{ color: colorTheme.text }}>
               Grid (⌘+G): {gridIsVisible ? 'visible' : 'hidden'}
             </StyledItem>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>
+            <StyledItem style={{ color: colorTheme.text }}>
               Block border (⌘+V): {blockBorderIsVisible ? 'visible' : 'hidden'}
             </StyledItem>
           </StyledFlex2>
@@ -61,18 +61,16 @@ const SidebarRight = () => {
       ) : mode === 'HELP' ? (
         <StyledFlex style={{ width: `calc(${window.innerWidth * 0.2}px - 0.5px)` }}>
           <StyledFlex2>
-            <StyledTitle style={{ color: colorTheme.textPrimary }}>Help</StyledTitle>
-            <StyledLabel style={{ color: colorTheme.textSecondary }}>Modes</StyledLabel>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>
-              kenki is built upon vim-like mode transitions.
-            </StyledItem>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>
+            <StyledTitle style={{ color: colorTheme.text }}>Help</StyledTitle>
+            <StyledLabel style={{ color: colorTheme.textHighlight }}>Modes</StyledLabel>
+            <StyledItem style={{ color: colorTheme.text }}>kenki is built upon vim-like mode transitions.</StyledItem>
+            <StyledItem style={{ color: colorTheme.text }}>
               Please visit our <a href="https://scrapbox.io/kenki/%E9%8D%B5%E8%A8%98_(kenki)">wiki</a> for more
               information.
             </StyledItem>
 
-            <StyledLabel style={{ color: colorTheme.textSecondary }}>Cursor mode</StyledLabel>
-            <StyledItem style={{ color: colorTheme.textPrimary }}>Move cursor: vim</StyledItem>
+            <StyledLabel style={{ color: colorTheme.textHighlight }}>Cursor mode</StyledLabel>
+            <StyledItem style={{ color: colorTheme.text }}>Move cursor: vim</StyledItem>
           </StyledFlex2>
         </StyledFlex>
       ) : null}

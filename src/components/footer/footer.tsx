@@ -71,39 +71,39 @@ const Footer = () => {
   const { backgroundColor, color } = match(mode)
     .with('NORMAL', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('INSERT', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('COMMAND', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('EDIT', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('SELECT', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('MULTISELECT', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('BLOCKHINT', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('SETTINGS', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .with('HELP', () => ({
       backgroundColor: colorTheme.footer,
-      color: colorTheme.textPrimary,
+      color: colorTheme.text,
     }))
     .exhaustive()
 
@@ -166,7 +166,7 @@ const Footer = () => {
             ref={ref}
             value={word}
             autoComplete="off"
-            style={{ backgroundColor: colorTheme.footer, color: colorTheme.textPrimary }}
+            style={{ backgroundColor: colorTheme.footer, color: colorTheme.text }}
             onFocus={(e) => e.target.select()}
             onChange={(e) => {
               setWord(e.target.value)

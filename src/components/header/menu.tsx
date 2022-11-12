@@ -1,6 +1,6 @@
 import Icon from '../common/icon'
-import openMenuSvg from '../../assets/icons/open-menu.svg'
-import closeMenuSvg from '../../assets/icons/close-menu.svg'
+import openMenuSvg from '../assets/ver-alpha/icons/open-menu.svg'
+import closeMenuSvg from '../assets/ver-alpha/icons/close-menu.svg'
 import { editorConfigActions } from '../../jotai-hooks/editorConfig/action'
 
 const Menu = () => {

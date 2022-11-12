@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useEffect, useRef } from 'react'
 import { v4 } from 'uuid'
-import searchSvg from '../../assets/icons/search.svg'
+import searchSvg from '../assets/ver-alpha/icons/search.svg'
 import { ContentData } from './sidebarLeft'
 import { modeSelectors } from '../../jotai-hooks/mode/selector'
 import { modeActions } from '../../jotai-hooks/mode/action'
@@ -9,7 +9,7 @@ import { relationActions } from '../../jotai-hooks/relations/action'
 import { editorConfigActions } from '../../jotai-hooks/editorConfig/action'
 import { blockSelectors } from '../../jotai-hooks/blocks/selector'
 import { blocksActions } from '../../jotai-hooks/blocks/action'
-import { BlockUtils } from '../../utils/block'
+import { BlockUtils } from '../../apis/block'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { pageConfigSelectors } from '../../jotai-hooks/pageConfig/selector'
 
@@ -74,7 +74,7 @@ const Search = ({
         id="search"
         value={buffer}
         autoComplete="off"
-        style={{ backgroundColor: colorTheme.searchBox, color: colorTheme.textPrimary }}
+        style={{ backgroundColor: colorTheme.searchBox, color: colorTheme.text }}
         onFocus={(e) => e.target.select()}
         onChange={(e) => {
           setWord(e.target.value)

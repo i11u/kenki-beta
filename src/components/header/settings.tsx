@@ -1,5 +1,5 @@
 import React from 'react'
-import settingsSvg from '../../assets/icons/header/settings.svg'
+import settingsSvg from '../assets/ver-alpha/icons/header/settings.svg'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
 import { modeActions } from '../../jotai-hooks/mode/action'
 import { editorConfigActions } from '../../jotai-hooks/editorConfig/action'
