@@ -1,6 +1,11 @@
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
+import { EditorState } from '../types'
 
-const CursorTools = () => {
+type Props = {
+  setEditorState: (editorState: EditorState) => void
+}
+
+const CursorTools = ({ setEditorState }: Props) => {
   const colorTheme = colorThemeSelector.useColorTheme()
   return (
     <div className="toolset-cursor-tools">
@@ -11,6 +16,7 @@ const CursorTools = () => {
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
+        onClick={() => setEditorState('TEXT')}
       >
         <div className="toolset-cursor-tools-button-hint">t</div>
         <svg
@@ -25,7 +31,7 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
@@ -43,13 +49,13 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
       >
-        <div className="toolset-cursor-tools-button-hint">r</div>
+        <div className="toolset-cursor-tools-button-hint">e</div>
         <svg
           id="_レイヤー_1"
           className="toolset-cursor-tools-button-icon"
@@ -61,13 +67,13 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
       >
-        <div className="toolset-cursor-tools-button-hint">r</div>
+        <div className="toolset-cursor-tools-button-hint">l</div>
         <svg
           id="_レイヤー_1"
           className="toolset-cursor-tools-button-icon"
@@ -91,13 +97,13 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
       >
-        <div className="toolset-cursor-tools-button-hint">r</div>
+        <div className="toolset-cursor-tools-button-hint">a</div>
         <svg
           id="_レイヤー_1"
           className="toolset-cursor-tools-button-icon"
@@ -116,13 +122,13 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
       >
-        <div className="toolset-cursor-tools-button-hint">r</div>
+        <div className="toolset-cursor-tools-button-hint">p</div>
         <svg
           id="_レイヤー_1"
           className="toolset-cursor-tools-button-icon"
@@ -137,13 +143,13 @@ const CursorTools = () => {
       </button>
       <button
         type="button"
-        className="toolset-cursor-tools-button"
+        className="toolset-cursor-tools-button disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
         }}
       >
-        <div className="toolset-cursor-tools-button-hint">r</div>
+        <div className="toolset-cursor-tools-button-hint">v</div>
         <svg
           id="_レイヤー_1"
           className="toolset-cursor-tools-button-icon"

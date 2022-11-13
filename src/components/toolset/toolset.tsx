@@ -2,7 +2,7 @@ import { match } from 'ts-pattern'
 import { useEffect } from 'react'
 import { EditorState } from '../types'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
-import TextTools from './textTools'
+import TextTools from './textTools/textTools'
 import CursorTools from './cursorTools'
 
 type Props = {
@@ -17,17 +17,22 @@ const Toolset = ({ editorState, setEditorState }: Props) => {
    * Register event handlers on keydown.
    * */
   useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      const buffer = ''
+    const callback = (e: KeyboardEvent): void =>
       match(editorState)
-        .with('CURSOR', () => {
-          if (e.key === 't') {
-            setEditorState('TEXT')
-          }
-        })
+        .with('CURSOR', () =>
+          match(e.key)
+            .with('t', () => setEditorState('TEXT'))
+            .otherwise(() => console.log(''))
+        )
+        .with('TEXT', () =>
+          match(e.key)
+            .with('Escape', () => setEditorState('CURSOR'))
+            .otherwise(() => console.log(''))
+        )
         .otherwise(() => console.log(''))
-    }
+
     document.addEventListener('keydown', callback)
+
     return function cleanup() {
       document.removeEventListener('keydown', callback)
     }
@@ -36,7 +41,7 @@ const Toolset = ({ editorState, setEditorState }: Props) => {
   return (
     <div className="toolset">
       {match(editorState)
-        .with('CURSOR', () => <CursorTools />)
+        .with('CURSOR', () => <CursorTools setEditorState={setEditorState} />)
         .with('TEXT', () => <TextTools />)
         .with('RECT', () => <div>image tool</div>)
         .with('ELLIPSE', () => <div>shape tool</div>)

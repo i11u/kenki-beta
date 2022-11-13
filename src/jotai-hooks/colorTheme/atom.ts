@@ -26,6 +26,7 @@ export type ColorTheme = {
   editorButton: string
   pageTitleText: string
   pageTitleUnderline: string
+  collapseMenuBackground: string
 }
 
 export const light: ColorTheme = {
@@ -54,6 +55,7 @@ export const light: ColorTheme = {
   editorButton: '#F3F2EE',
   pageTitleText: '#737869',
   pageTitleUnderline: '#737869',
+  collapseMenuBackground: '#F3F2EE',
 }
 
 export const dark: ColorTheme = {
@@ -82,6 +84,7 @@ export const dark: ColorTheme = {
   editorButton: '#373B40',
   pageTitleText: '#ffffff',
   pageTitleUnderline: '#ffffff',
+  collapseMenuBackground: '#ffffff',
 }
 
 export const colorThemeAtom = atom<ColorTheme>(light)

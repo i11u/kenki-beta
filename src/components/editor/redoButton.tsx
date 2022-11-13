@@ -7,7 +7,7 @@ const RedoButton = () => {
   return (
     <button
       type="button"
-      className="editor-redo-button"
+      className="editor-left-buttons-button"
       style={{
         background: colorTheme.editorButton,
         boxShadow: `0 1px 1px 1px ${colorTheme.boxShadow}`,
@@ -16,7 +16,7 @@ const RedoButton = () => {
     >
       <svg
         id="_レイヤー_1"
-        className="editor-redo-button-icon"
+        className="editor-left-buttons-button-icon"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
       >

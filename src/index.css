@@ -13,6 +13,9 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    background-color: #e3e3e3;
+    padding: 0 0.2em;
+    border-radius: 0.2em;
 }
 
 [contenteditable='true']:empty::before {
@@ -60,7 +63,12 @@ Variables
     --pageinfo-z-index: 1;
     --editor-z-index: 0;
     --editor-page-z-index: 0;
-    --editor-floatings: 1;
+    --editor-floatings-z-index: 1;
+
+    /*
+    color
+    */
+    --disabled-color: #e3e3e3;
 }
 
 /*
@@ -69,6 +77,7 @@ Global property
 .disabled {
     pointer-events: none;
     opacity: 0.5;
+    background-color: var(--disabled-color) !important;
 }
 
 .display-none {
@@ -178,68 +187,47 @@ Editor styles
     overscroll-behavior: none;
 }
 
-.editor-undo-button {
-    position: sticky;
-    top: 15px;
-    left: 30px;
+.editor-left-buttons {
+    position: fixed;
+    display: flex;
+    gap: 10px;
+}
+
+.editor-left-buttons-button {
     width: 30px;
     height: 20px;
     border: none;
     border-radius: 2px;
-    z-index: var(--editor-floatings);
+    z-index: var(--editor-floatings-z-index);
 }
 
-.editor-undo-button-icon {
+.editor-left-buttons-button-icon {
     width: 18px;
     height: 18px;
 }
 
-.editor-redo-button {
-    position: sticky;
-    top: 15px;
-    left: 70px;
+.editor-right-buttons {
+    position: fixed;
+    display: flex;
+    gap: 10px;
+}
+
+.editor-right-buttons-button {
     width: 30px;
     height: 20px;
     border: none;
     border-radius: 2px;
-    z-index: var(--editor-floatings);
+    z-index: var(--editor-floatings-z-index);
 }
 
-.editor-redo-button-icon {
+.editor-right-buttons-button-icon {
     width: 18px;
     height: 18px;
 }
 
-.editor-toggle-sidebar-button {
-    position: sticky;
-    top: 15px;
-    left: 110px;
-    width: 30px;
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    z-index: var(--editor-floatings);
-}
-
-.editor-toggle-sidebar-button-icon {
-    width: 18px;
-    height: 18px;
-}
-
-.editor-toggle-pageinfo-button {
-    position: sticky;
-    top: 15px;
-    left: 150px;
-    width: 30px;
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    z-index: var(--editor-floatings);
-}
-
-.editor-toggle-pageinfo-button-icon {
-    width: 18px;
-    height: 18px;
+.editor-current-scale {
+    font-size: 12px;
+    margin: auto;
 }
 
 .editor-breadcrumbs {
@@ -251,7 +239,7 @@ Editor styles
     width: 200px;
     height: 20px;
     font-size: var(--breadcrumb-text-size);
-    z-index: var(--editor-floatings);
+    z-index: var(--editor-floatings-z-index);
 }
 
 .editor-page {
@@ -290,7 +278,7 @@ Toolset styles
     bottom: 35px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: var(--editor-floatings);
+    z-index: var(--editor-floatings-z-index);
 }
 
 .toolset-cursor-tools {
@@ -324,4 +312,171 @@ Toolset styles
     top: calc(50% + 2px);
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.toolset-text-tools {
+    position: fixed;
+    bottom: 20px;
+    width: fit-content;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--editor-floatings-z-index);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.toolset-text-tools-description {
+    font-size: 12px;
+}
+
+.toolset-text-tools-container {
+    display: flex;
+    width: fit-content;
+    height: 90px;
+    gap: 40px;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolset-text-tools-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.toolset-text-tools-item-title {
+    font-size: 14px;
+    width: fit-content;
+    height: 20px;
+}
+
+.toolset-text-tools-item-content {
+    display: flex;
+    width: fit-content;
+    height: 20px;
+    align-items: center;
+    gap: 20px;
+}
+
+.toolset-text-tools-item-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.toolset-text-tools-item-text {
+    display: inline-block;
+    width: fit-content;
+    height: auto;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.toolset-text-tools-item-collapse {
+    border-radius: 1px;
+    display: flex;
+    padding: 0 3px;
+    gap: 5px;
+    width: fit-content;
+    height: auto;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toolset-text-tools-item-collapse-text {
+    font-size: 12px;
+}
+
+.toolset-text-tools-item-collapse-separator {
+    width: 1px;
+    height: 14px;
+    background-color: black;
+    color: black;
+}
+
+.toolset-text-tools-item-collapse-button {
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+}
+
+.toolset-text-tools-item-color-palette {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    gap: 15px;
+}
+
+.toolset-text-tools-item-color-palette-color {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.toolset-text-tools-optional {
+    position: fixed;
+    bottom: 20px;
+    width: fit-content;
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--editor-floatings-z-index);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.toolset-text-tools-optional-description {
+    font-size: 12px;
+}
+
+.toolset-text-tools-optional-container {
+    display: flex;
+    width: fit-content;
+    height: 90px;
+    gap: 25px;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolset-text-tools-optional-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.toolset-text-tools-optional-item-title {
+    font-size: 14px;
+    width: fit-content;
+    height: 20px;
+}
+
+.toolset-text-tools-optional-item-content {
+    display: flex;
+    width: fit-content;
+    height: 20px;
+    align-items: center;
+    gap: 10px;
+}
+
+.toolset-text-tools-optional-item-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.toolset-text-tools-optional-item-text {
+    display: inline-block;
+    width: fit-content;
+    height: auto;
+    font-size: 12px;
+    white-space: nowrap;
 }

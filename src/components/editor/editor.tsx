@@ -11,6 +11,9 @@ import { EditorState } from '../types'
 import Page from './Page'
 import useEditorResize from './hooks/useEditorResize'
 import useKeydownHandler from './hooks/useKeydownHandler'
+import ZoomOutButton from './zoomOutButton'
+import CurrentScale from './currentScale'
+import ZoomInButton from './zoomInButton'
 
 type Props = {
   workingModuleIndex: number
@@ -55,12 +58,31 @@ const Editor = ({
         }px`,
       }}
     >
-      <UndoButton />
-      <RedoButton />
-      <ToggleSidebarButton />
-      <TogglePageinfoButton />
+      <div
+        className="editor-left-buttons"
+        style={{
+          top: '15px',
+          left: `${(sidebarIsVisible ? sidebarWidth : 0) + 30}px`,
+        }}
+      >
+        <UndoButton />
+        <RedoButton />
+        <ToggleSidebarButton />
+        <TogglePageinfoButton />
+      </div>
       <Breadcrumbs />
       <PageTitle />
+      <div
+        className="editor-right-buttons"
+        style={{
+          top: '15px',
+          right: `${(pageinfoIsVisible ? pageinfoWidth : 0) + 30}px`,
+        }}
+      >
+        <ZoomOutButton />
+        <CurrentScale />
+        <ZoomInButton />
+      </div>
       <Toolset editorState={editorState} setEditorState={setEditorState} />
       <Page />
     </div>
