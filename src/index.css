@@ -247,8 +247,6 @@ Editor styles
     top: 0;
     left: 0;
     overflow: auto;
-    width: 2000px;
-    height: 2000px;
     z-index: var(--editor-page-z-index);
 }
 
@@ -261,6 +259,8 @@ Editor styles
 
 .editor-page-title-text {
     font-size: var(--page-title-text-size);
+    margin: 0;
+    padding: 0;
 }
 
 .editor-page-title-underline {
@@ -316,7 +316,7 @@ Toolset styles
 
 .toolset-text-tools {
     position: fixed;
-    bottom: 20px;
+    bottom: 0;
     width: fit-content;
     height: auto;
     left: 50%;
@@ -421,7 +421,7 @@ Toolset styles
 
 .toolset-text-tools-optional {
     position: fixed;
-    bottom: 20px;
+    bottom: 0;
     width: fit-content;
     height: auto;
     left: 50%;

@@ -6,14 +6,14 @@ import RedoButton from './redoButton'
 import TogglePageinfoButton from './togglePageinfoButton.'
 import Breadcrumbs from './breadcrumbs'
 import Toolset from '../toolset/toolset'
-import PageTitle from './pageTitle'
 import { EditorState } from '../types'
-import Page from './Page'
 import useEditorResize from './hooks/useEditorResize'
 import useKeydownHandler from './hooks/useKeydownHandler'
 import ZoomOutButton from './zoomOutButton'
 import CurrentScale from './currentScale'
 import ZoomInButton from './zoomInButton'
+import PageTitle from './pageTitle'
+import Page from './page'
 
 type Props = {
   workingModuleIndex: number

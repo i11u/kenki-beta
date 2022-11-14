@@ -8,13 +8,13 @@ import { PageConfig, pageConfigAtom } from '../../../jotai-hooks/pageConfig/atom
 import { pageConfigSelectors } from '../../../jotai-hooks/pageConfig/selector'
 import useOnResizeEffect from '../../../hooks/useOnResizeEffect'
 import useThrottleCallback from '../../../hooks/useThrottleCallback'
-import Grid from './grid'
 import { editorConfigSelectors } from '../../../jotai-hooks/editorConfig/selector'
 import useOnWheelPageEffect from '../../../hooks/useOnWheelPageEffect'
-import Blocks from './blocks'
-import CursorTSX from './cursor'
-import Relations from './relations'
 import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
+import Grid from './grid'
+import Relations from './relations'
+import CursorTSX from './cursor'
+import Blocks from './blocks'
 
 const Page = () => {
   const [pageConfig, setPageConfig] = useAtom(pageConfigAtom)
@@ -29,7 +29,7 @@ const Page = () => {
   useOnResizeEffect(gridNum.rowNum, pageRef)
   const colorTheme = colorThemeSelector.useColorTheme()
 
-  const style = PageUtils.style(pageConfig.aspectRatio)
+  // const style = PageUtils.style(pageConfig.aspectRatio)
 
   const throttle = useThrottleCallback()
 
@@ -46,16 +46,12 @@ const Page = () => {
   }, [pageConfig, previousPageConfig, sidebarIsOpen])
 
   return (
+    // <div className="editor-page" />
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <StyledPage
       id="page"
+      className="editor-page"
       ref={pageRef}
-      style={{
-        ...style,
-        backgroundColor: colorTheme.page,
-        // borderRight: `1px solid ${colorTheme.grid}`,
-        // borderBottom: `1px solid ${colorTheme.grid}`,
-        boxShadow: `5px 5px 10px ${colorTheme.shadow}, -1px 0 10px ${colorTheme.shadow}`,
-      }}
       keyframes={kf}
       onMouseDown={(e) =>
         e.target === pageRef.current
@@ -80,10 +76,10 @@ const Page = () => {
 
 const StyledPage = styled.div<{ keyframes: Keyframes }>`
   animation: ${(props) => props.keyframes};
-  min-width: 960px;
-  position: absolute;
-  width: 100%;
-  z-index: 0;
+  //min-width: 960px;
+  //position: absolute;
+  //width: 100%;
+  //z-index: 0;
 `
 
 export default React.memo(Page)
