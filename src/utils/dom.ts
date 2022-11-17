@@ -32,4 +32,12 @@ export const DomUtils = {
   removeElements(els: HTMLCollectionOf<Element>) {
     return Array.from(els).map((el) => el.parentNode?.removeChild(el))
   },
+
+  // getContainingElement(element) {
+  //   return (
+  //     (typeof element.getDestinationInsertionPoints === 'function'
+  //       ? element.getDestinationInsertionPoints()[0]
+  //       : undefined) || element.parentElement
+  //   )
+  // },
 }

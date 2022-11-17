@@ -9,9 +9,8 @@ const Blocks = () => {
 
   return (
     <div>
-      {blocks.map((blockAtom, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <BlockTSX key={`block-${index}`} blockAtom={blockAtom} />
+      {blocks.map((blockAtom) => (
+        <BlockTSX key={`block-${blockAtom.toString()}`} blockAtom={blockAtom} />
       ))}
     </div>
   )

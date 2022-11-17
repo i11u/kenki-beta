@@ -1,7 +1,10 @@
 import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
+import { pageConfigSelectors } from '../../../jotai-hooks/pageConfig/selector'
+import { pageConfigActions } from '../../../jotai-hooks/pageConfig/action'
 
 const ZoomOutButton = () => {
-  let redo: () => void
+  const scale = pageConfigSelectors.usePageScale()
+  const changeScale = pageConfigActions.useChangeScale()
   const colorTheme = colorThemeSelector.useColorTheme()
 
   return (
@@ -12,7 +15,7 @@ const ZoomOutButton = () => {
         background: colorTheme.editorButton,
         boxShadow: `0 1px 1px 1px ${colorTheme.boxShadow}`,
       }}
-      onClick={() => redo()}
+      onClick={() => changeScale(scale - 0.1)}
     >
       <svg
         id="_レイヤー_1"

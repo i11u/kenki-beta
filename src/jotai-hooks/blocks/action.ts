@@ -19,6 +19,7 @@ type BlocksActions = {
     isSelected: boolean
     editing: boolean
   }) => void
+  useChangeAngle: () => ({ blockId, angle }: { blockId: string; angle: number }) => void
 }
 
 export type Direction = 'left' | 'down' | 'up' | 'right'
@@ -127,6 +128,17 @@ export const blocksActions: BlocksActions = {
           isEmpty,
           isSelected,
           editing,
+        }))
+      }, [])
+    ),
+
+  useChangeAngle: () =>
+    useAtomCallback(
+      useCallback((get, set, { blockId, angle }) => {
+        const blockAtom = get(blockByIdAtom(blockId))
+        set(blockAtom, (prev) => ({
+          ...prev,
+          angle: angle < 0 ? 345 : angle > 360 ? 15 : angle,
         }))
       }, [])
     ),

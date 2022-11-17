@@ -26,6 +26,15 @@ const CursorTSX = () => {
    * */
   useEffect(() => setPreviousPosition(position), [position])
 
+  useEffect(() => {
+    if (position.row - Math.floor(position.row) === 0.5) {
+      changeCursorPosition({
+        row: Math.floor(position.row),
+        col: position.col,
+      })
+    }
+  }, [changeCursorPosition, position])
+
   useLayoutEffect(() => {
     if (position.col < 0 || position.col >= gridNum.colNum || position.row < 0 || position.row >= gridNum.rowNum) {
       changeCursorPosition(previousPosition)

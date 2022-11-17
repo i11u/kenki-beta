@@ -13,10 +13,11 @@ const Toolset = () => {
         .with('TEXT', () => <TextTools />)
         .with('RECT', () => <div>image tool</div>)
         .with('ELLIPSE', () => <div>shape tool</div>)
-        // .with('LINE', () => <div>brush tool</div>)
-        // .with('ARROW', () => <div>eraser tool</div>)
+        // .with('LINE', () => <div>line tool</div>)
+        .with('ARROW', () => <div>arrow tool</div>)
         .with('PICTURE', () => <div>pen tool</div>)
         .with('VIDEO', () => <div>pen tool</div>)
+        .with('SELECT', () => <TextTools />)
         .otherwise(() => (
           <div />
         ))}

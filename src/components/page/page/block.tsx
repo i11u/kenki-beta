@@ -14,7 +14,7 @@ import { CodeHighlightNode, CodeNode } from '@lexical/code'
 import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { match } from 'ts-pattern'
 import { v4 } from 'uuid'
-import { BlockUtils } from '../../../apis/block'
+import { BlockUtils } from '../../../utils/block'
 import { blockSelectors } from '../../../jotai-hooks/blocks/selector'
 import { blocksActions, useRemoveBlock, useUpdateInnerHTML } from '../../../jotai-hooks/blocks/action'
 import { pageConfigActions } from '../../../jotai-hooks/pageConfig/action'
@@ -26,7 +26,6 @@ import { modeActions } from '../../../jotai-hooks/mode/action'
 import TextBlock from '../../editor/textBlock/textBlock'
 import Theme from '../../editor/textBlock/themes/theme'
 import { relationActions } from '../../../jotai-hooks/relations/action'
-import { DomUtils } from '../../../apis/dom'
 
 const StyledBlockSelection = styled.div`
   position: absolute;
@@ -91,11 +90,17 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
   const scale = pageConfigSelectors.usePageScale()
 
   const [optionKeyIsPressed, setOptionKeyIsPressed] = useState(false)
-  const [angle, setAngle] = useState(0)
+  const changeAngle = blocksActions.useChangeAngle()
 
   const selectedBlocks = blockSelectors.useSelectedBlocks()
   const createBlock = blocksActions.useAddBlock()
   const createRelation = relationActions.useAddRelation()
+
+  useLayoutEffect(() => {
+    if (block.width === 1) {
+      changeBlockSize({ blockId: block.id, width: 5, height: 1 })
+    }
+  }, [block.id, block.width, changeBlockSize])
 
   const linkHintCharacters = 'sadfjklewcmpgh'
 
@@ -120,10 +125,15 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
   }
 
   useEffect(() => {
-    let buffer = ''
+    const buffer = ''
     const keydownCallback = (e: KeyboardEvent) => {
+      console.log(optionKeyIsPressed)
       if (!block.editing && !block.isSelected) return
+      if (mode === 'SELECT') return
       if (optionKeyIsPressed) {
+        const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
+        setTimeout(() => textBlock.blur(), 0)
+        e.preventDefault()
         match(e.code)
           .with('KeyH', () => {
             e.preventDefault()
@@ -131,6 +141,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
               changeBlockPosition({
                 blockId: block.id,
                 position: { col: block.position.col - 2, row: block.position.row },
+              })
+            } else if (e.ctrlKey) {
+              document.getElementsByClassName('editor')[0]?.scrollBy({
+                top: 0,
+                left: -100,
+                behavior: 'smooth',
               })
             } else {
               changeBlockPosition({
@@ -146,6 +162,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
                 blockId: block.id,
                 position: { col: block.position.col, row: block.position.row + 2 },
               })
+            } else if (e.ctrlKey) {
+              document.getElementsByClassName('editor')[0]?.scrollBy({
+                top: 100,
+                left: 0,
+                behavior: 'smooth',
+              })
             } else {
               changeBlockPosition({
                 blockId: block.id,
@@ -159,6 +181,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
               changeBlockPosition({
                 blockId: block.id,
                 position: { col: block.position.col, row: block.position.row - 2 },
+              })
+            } else if (e.ctrlKey) {
+              document.getElementsByClassName('editor')[0]?.scrollBy({
+                top: -100,
+                left: 0,
+                behavior: 'smooth',
               })
             } else {
               changeBlockPosition({
@@ -174,6 +202,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
                 blockId: block.id,
                 position: { col: block.position.col + 2, row: block.position.row },
               })
+            } else if (e.ctrlKey) {
+              document.getElementsByClassName('editor')[0]?.scrollBy({
+                top: 0,
+                left: 100,
+                behavior: 'smooth',
+              })
             } else {
               changeBlockPosition({
                 blockId: block.id,
@@ -183,107 +217,117 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
           })
           .with('KeyR', () => {
             e.preventDefault()
-            if (e.metaKey) {
-              setAngle((prev) => (prev === 0 ? 345 : prev - 15))
+            if (e.ctrlKey) {
+              changeAngle({ blockId: block.id, angle: block.angle - 15 })
             } else {
-              setAngle((prev) => (prev === 360 ? 15 : prev + 15))
+              changeAngle({ blockId: block.id, angle: block.angle + 15 })
             }
           })
-          .with('BracketRight', () => {
-            e.preventDefault()
-            changeBlockSize({
-              blockId: block.id,
-              width: block.width - 1,
-              height: block.height,
-            })
-          })
-          .with('Backslash', () => {
-            e.preventDefault()
-            changeBlockSize({
-              blockId: block.id,
-              width: block.width + 1,
-              height: block.height,
-            })
-          })
+          // .with('BracketRight', () => {
+          //   e.preventDefault()
+          //   if (block.width === 2) return
+          //   const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
+          //   textBlock.style.whiteSpace = 'normal'
+          //   textBlock.style.overflowWrap = 'break-word'
+          //   changeBlockSize({
+          //     blockId: block.id,
+          //     width: block.width - 1,
+          //     height: block.height,
+          //   })
+          //   textBlock.style.width = `${(block.width - 1) * 30}px`
+          // })
+          // .with('Backslash', () => {
+          //   e.preventDefault()
+          //   const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
+          //   textBlock.style.whiteSpace = 'normal'
+          //   textBlock.style.overflowWrap = 'break-word'
+          //   changeBlockSize({
+          //     blockId: block.id,
+          //     width: block.width + 1,
+          //     height: block.height,
+          //   })
+          //   textBlock.style.width = `${(block.width + 1) * 30}px`
+          // })
           .with('Tab', () => {
+            setOptionKeyIsPressed(false)
             if (e.shiftKey) {
-              const startBlock = selectedBlocks[0]
-              changeBlockStatus({
-                blockId: startBlock.id,
-                isEmpty: false,
-                isSelected: false,
-                editing: false,
-              })
-              changeMode('BLOCKHINT')
-              //  Activate block hints
-              const blockDOMs = Array.from(document.getElementsByClassName('block-wrapper'))
-              const labels = hintStrings(blockDOMs.length)
-              const hints = blockDOMs.map((blockDOM, i) => {
-                const hint = document.createElement('div')
-                hint.id = blockDOM.id.slice(6, -8)
-                hint.className = `hint ${labels[i]}`
-                hint.innerHTML = labels[i]
-                hint.style.color = 'black'
-                hint.style.position = 'absolute'
-                hint.style.backgroundColor = '#ffdf5e'
-                const cellWidth = document.getElementById('cursor')?.clientWidth as number
-                const cellHeight = document.getElementById('cursor')?.clientHeight as number
-                hint.style.width = `calc(${cellWidth}px + ${cellWidth * (labels[i].length - 1) * 0.5}px)`
-                hint.style.height = `${cellHeight}px`
-                hint.style.marginTop = '-20px'
-                hint.style.marginLeft = '-20px'
-                hint.style.border = '1px solid gray'
-                hint.style.borderRadius = '2px'
-                hint.style.fontFamily = 'Monaco, sans-serif'
-                hint.style.fontSize = 'auto'
-                hint.style.textAlign = 'center'
-                return hint
-              })
-              hints.map((hint) =>
-                (document.getElementById(`block-${hint.id}-wrapper`) as HTMLElement).appendChild(hint)
-              )
-              buffer = ''
-              // If buffer hits any hint, flag becomes true
-              let noMatch = true
-              hints.map((hint) => {
-                const reg1 = new RegExp(`^${buffer}`)
-                const reg2 = new RegExp(`^${hint.className.slice(5)}$`)
-                if (reg1.test(hint.className.slice(5))) {
-                  noMatch = false
-                  if (reg2.test(buffer)) {
-                    createRelation({
-                      relation: {
-                        id: v4(),
-                        orient: 'outward',
-                        type: 'thick',
-                        startBlockId: startBlock.id,
-                        endBlockId: hint.id,
-                        isSelected: true,
-                        editing: true,
-                        label: '',
-                        scale,
-                      },
-                    })
-                    DomUtils.removeElements(document.getElementsByClassName('hint'))
-                    changeMode('SELECT')
-                    buffer = ''
-                  } else {
-                    // eslint-disable-next-line no-param-reassign
-                    hint.innerHTML = `<span style="color: red">${buffer}</span>${hint.className
-                      .slice(5)
-                      .slice(buffer.length)}`
-                  }
-                } else {
-                  hint.remove()
-                }
-                return false
-              })
-              if (noMatch) {
-                DomUtils.removeElements(document.getElementsByClassName('hint'))
-                changeMode('CURSOR')
-                buffer = ''
-                return false
-              }
+              e.preventDefault()
+              // const startBlock = selectedBlocks[0]
+              // changeBlockStatus({
+              //   blockId: startBlock.id,
+              //   isEmpty: false,
+              //   isSelected: false,
+              //   editing: false,
+              // })
+              // changeMode('BLOCKHINT')
+              // //  Activate block hints
+              // const blockDOMs = Array.from(document.getElementsByClassName('block-wrapper'))
+              // const labels = hintStrings(blockDOMs.length)
+              // const hints = blockDOMs.map((blockDOM, i) => {
+              //   const hint = document.createElement('div')
+              //   hint.id = blockDOM.id.slice(6, -8)
+              //   hint.className = `hint ${labels[i]}`
+              //   hint.innerHTML = labels[i]
+              //   hint.style.color = 'black'
+              //   hint.style.position = 'absolute'
+              //   hint.style.backgroundColor = '#ffdf5e'
+              //   const cellWidth = document.getElementById('cursor')?.clientWidth as number
+              //   const cellHeight = document.getElementById('cursor')?.clientHeight as number
+              //   hint.style.width = `calc(${cellWidth}px + ${cellWidth * (labels[i].length - 1) * 0.5}px)`
+              //   hint.style.height = `${cellHeight}px`
+              //   hint.style.marginTop = '-20px'
+              //   hint.style.marginLeft = '-20px'
+              //   hint.style.border = '1px solid gray'
+              //   hint.style.borderRadius = '2px'
+              //   hint.style.fontFamily = 'Monaco, sans-serif'
+              //   hint.style.fontSize = 'auto'
+              //   hint.style.textAlign = 'center'
+              //   return hint
+              // })
+              // hints.map((hint) =>
+              //   (document.getElementById(`block-${hint.id}-wrapper`) as HTMLElement).appendChild(hint)
+              // )
+              // buffer = ''
+              // // If buffer hits any hint, flag becomes true
+              // let noMatch = true
+              // hints.map((hint) => {
+              //   const reg1 = new RegExp(`^${buffer}`)
+              //   const reg2 = new RegExp(`^${hint.className.slice(5)}$`)
+              //   if (reg1.test(hint.className.slice(5))) {
+              //     noMatch = false
+              //     if (reg2.test(buffer)) {
+              //       createRelation({
+              //         relation: {
+              //           id: v4(),
+              //           orient: 'outward',
+              //           type: 'thick',
+              //           startBlockId: startBlock.id,
+              //           endBlockId: hint.id,
+              //           isSelected: true,
+              //           editing: true,
+              //           label: '',
+              //           scale,
+              //         },
+              //       })
+              //       DomUtils.removeElements(document.getElementsByClassName('hint'))
+              //       buffer = ''
+              //     } else {
+              //       // eslint-disable-next-line no-param-reassign
+              //       hint.innerHTML = `<span style="color: red">${buffer}</span>${hint.className
+              //         .slice(5)
+              //         .slice(buffer.length)}`
+              //     }
+              //   } else {
+              //     hint.remove()
+              //   }
+              //   return false
+              // })
+              // if (noMatch) {
+              //   DomUtils.removeElements(document.getElementsByClassName('hint'))
+              //   changeMode('CURSOR')
+              //   buffer = ''
+              //   return false
+              // }
             } else {
               const startBlock = selectedBlocks[0]
               changeBlockStatus({
@@ -296,8 +340,8 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
                 v4(),
                 0,
                 {
-                  row: startBlock.position.row + startBlock.height + 2,
-                  col: startBlock.position.col + startBlock.width + 2,
+                  row: startBlock.position.row + startBlock.height / 2 - 0.5,
+                  col: startBlock.position.col + startBlock.width + 3,
                 },
                 1,
                 1,
@@ -306,7 +350,8 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
                 false,
                 false,
                 '',
-                ''
+                '',
+                0
               )
               createBlock({ block: endBlock })
               createRelation({
@@ -330,17 +375,19 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
         match(e.key)
           .with('Alt', () => {
             setOptionKeyIsPressed(true)
+            const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
+            setTimeout(() => textBlock.blur(), 0)
             changeBlockStatus({
               blockId: block.id,
               isEmpty: false,
               isSelected: true,
-              editing: true,
+              editing: false,
             })
-            document.getElementById(`block-${block.id}`)?.blur()
           })
           .otherwise(() => console.log(''))
       }
     }
+
     const keyupCallback = (e: KeyboardEvent) => {
       if (!block.editing && !block.isSelected) return
       if (optionKeyIsPressed) {
@@ -351,11 +398,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
               blockId: block.id,
               isEmpty: false,
               isSelected: false,
-              editing: false,
+              editing: true,
             })
           })
           .otherwise(() => console.log(''))
-        document.getElementById(`block-${block.id}`)?.focus()
+        const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
+        textBlock.focus()
       } else {
         console.log('')
       }
@@ -367,7 +415,7 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
       document.removeEventListener('keyup', keyupCallback)
     }
   }, [
-    angle,
+    block.angle,
     block.editing,
     block.height,
     block.id,
@@ -375,12 +423,14 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
     block.position.col,
     block.position.row,
     block.width,
+    changeAngle,
     changeBlockPosition,
     changeBlockSize,
     changeBlockStatus,
     changeMode,
     createBlock,
     createRelation,
+    mode,
     optionKeyIsPressed,
     scale,
     selectedBlocks,
@@ -391,9 +441,11 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
    * Auto focus on the text node if being edited.
    * */
   useEffect(() => {
+    const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
     if (block.editing) {
-      const textBlock = document.getElementById(`block-${block.id}`) as HTMLDivElement
       setTimeout(() => textBlock.focus(), 0)
+    } else {
+      setTimeout(() => textBlock.blur(), 0)
     }
   }, [block, block.editing, block.id])
 
@@ -447,12 +499,6 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
     }
   }, [block.editing, mode])
 
-  useEffect(() => {
-    if (mode !== 'TEXT') {
-      setTimeout(() => blockRef.current?.blur(), 0)
-    }
-  }, [mode])
-
   const blockBorderIsVisible = pageConfigSelectors.useBlockBorderIsVisible()
 
   const style = BlockUtils.style(block, gridNum, blockBorderIsVisible)
@@ -463,12 +509,14 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
         id={`block-${block.id}-selection`}
         style={{
           ...style,
-          width: `calc(${style.width} + 1px)`,
-          height: `calc(${style.height} + 1px)`,
-          minWidth: `calc(${style.minWidth} + 1px)`,
-          minHeight: `calc(${style.minHeight} + 1px)`,
+          width: blockBorderIsVisible ? `calc(${style.width} + 1px)` : style.width,
+          height: blockBorderIsVisible ? `calc(${style.height} + 1px)` : style.height,
+          minWidth: blockBorderIsVisible ? `calc(${style.minWidth} + 1px)` : style.minWidth,
+          minHeight: blockBorderIsVisible ? `calc(${style.minHeight} + 1px)` : style.minHeight,
+          borderWidth: blockBorderIsVisible ? '1px' : '0px',
           display: block.isSelected ? '' : 'none',
-          transform: `rotate(${angle}deg)`,
+          transform: `rotate(${block.angle}deg)`,
+          transformOrigin: 'center center',
         }}
       />
       <StyledBlockWrapper
@@ -478,11 +526,12 @@ const BlockTSX = ({ blockAtom }: { blockAtom: PrimitiveAtom<Block> }) => {
           ...style,
           borderWidth: blockBorderIsVisible ? '1px' : '0px',
           borderColor: colorTheme.blockBorder,
-          borderStyle: mode === 'SELECT' && block.isSelected ? 'dotted' : 'solid',
+          borderStyle: block.isSelected || block.editing ? 'solid' : 'dashed',
           backgroundColor: colorTheme.editorBackground,
           color: colorTheme.text,
           opacity: mode === 'BLOCKHINT' && !block.isSelected ? '0.5' : '',
-          transform: `rotate(${angle}deg)`,
+          transform: `rotate(${block.angle}deg)`,
+          transformOrigin: 'center center',
         }}
         onDoubleClick={(e: React.MouseEvent<HTMLDivElement>) => {
           if (mode === 'CURSOR') {

@@ -73,6 +73,8 @@ function relationPosition(gridNum: { rowNum: number; colNum: number }, startBloc
       ? (100 / gridNum.rowNum) * (y2 + h2)
       : y2 > y1 + h1
       ? (100 / gridNum.rowNum) * (y1 + h1)
+      : y1 + h1 / 2 < y2
+      ? (100 / gridNum.rowNum) * (y1 + h1 / 2)
       : y1 + h1 >= y2 + h2
       ? (100 / gridNum.rowNum) * (y2 + h2 / 2)
       : y1 + h1 < y2 + h2

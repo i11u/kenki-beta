@@ -1,7 +1,10 @@
 import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
+import { pageConfigActions } from '../../../jotai-hooks/pageConfig/action'
+import { pageConfigSelectors } from '../../../jotai-hooks/pageConfig/selector'
 
 const ZoomInButton = () => {
-  let zoomIn: () => void
+  const scale = pageConfigSelectors.usePageScale()
+  const changeScale = pageConfigActions.useChangeScale()
   const colorTheme = colorThemeSelector.useColorTheme()
 
   return (
@@ -12,7 +15,7 @@ const ZoomInButton = () => {
         background: colorTheme.editorButton,
         boxShadow: `0 1px 1px 1px ${colorTheme.boxShadow}`,
       }}
-      onClick={() => zoomIn()}
+      onClick={() => changeScale(scale + 0.1)}
     >
       <svg
         id="_レイヤー_1"

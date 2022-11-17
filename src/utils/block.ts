@@ -6,8 +6,8 @@ export class BlockUtils {
   private static isInterrupted = false
 
   public static style = (block: Block, gridNum: { rowNum: number; colNum: number }, blockBorderIsVisible: boolean) => ({
-    top: `${block.position.row * 30}px`,
-    left: `${block.position.col * 30}px`,
+    top: blockBorderIsVisible ? `${block.position.row * 30}px` : `${block.position.row * 30 + 1}px`,
+    left: blockBorderIsVisible ? `${block.position.col * 30}px` : `${block.position.col * 30 + 1}px`,
     width: `${block.width * 30 - 1}px`,
     height: `${block.height * 30 - 1}px`,
     minWidth: '29px',
@@ -25,7 +25,8 @@ export class BlockUtils {
     isSelected: boolean,
     editing: boolean,
     defaultInnerHTML: string,
-    innerHTML: string
+    innerHTML: string,
+    angle: number
   ): Block => ({
     id,
     page,
@@ -38,10 +39,11 @@ export class BlockUtils {
     editing,
     defaultInnerHTML,
     innerHTML,
+    angle,
   })
 
   public static emptyBlock = ({ position }: { position: Position }) =>
-    this.composeBlock(v4(), 0, position, 1, 1, null, true, false, true, '', '')
+    this.composeBlock(v4(), 0, position, 5, 1, null, true, false, true, '', '', 0)
 
   /**
    * When any input comes in unsettledBlock,
@@ -61,14 +63,12 @@ export class BlockUtils {
     const block = document.getElementById(`block-${id}`) as HTMLDivElement
     const placeholder = document.getElementById(`placeholder-${id}`)
     updateInnerHTML({ blockId: id, innerHTML: block.innerHTML ? block.innerHTML : '' })
-    return placeholder !== null
+    return placeholder !== null || block.textContent === ''
       ? changeBlockSize({
           blockId: id,
-          width: Math.ceil(Math.max(block.clientWidth, placeholder.clientWidth) / cellLength),
-          height: Math.ceil(Math.max(block.clientHeight, placeholder.clientHeight) / cellLength),
+          width: 5,
+          height: 1,
         })
-      : block.textContent === ''
-      ? changeBlockSize({ blockId: id, width: 1, height: 1 })
       : changeBlockSize({
           blockId: id,
           width: Math.ceil(block.clientWidth / cellLength),

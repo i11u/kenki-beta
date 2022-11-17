@@ -15,7 +15,7 @@ import styled from 'styled-components'
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin'
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin'
 import { Block } from '../../../jotai-hooks/blocks/atom'
-import { BlockUtils } from '../../../apis/block'
+import { BlockUtils } from '../../../utils/block'
 import { blocksActions, useUpdateInnerHTML } from '../../../jotai-hooks/blocks/action'
 import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
 

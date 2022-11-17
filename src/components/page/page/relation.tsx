@@ -200,18 +200,29 @@ const RelationTSX = ({ relationAtom }: { relationAtom: PrimitiveAtom<Relation> }
             changeBlockStatus({
               blockId: relation.endBlockId as string,
               isEmpty: true,
-              isSelected: true,
-              editing: false,
+              isSelected: false,
+              editing: true,
             })
-            changeMode('SELECT')
+            const textBlock = document.getElementById(`block-${relation.endBlockId as string}`) as HTMLDivElement
+            setTimeout(() => {
+              textBlock.focus()
+            }, 0)
+            changeMode('TEXT')
           } else if (e.key === 'Escape') {
-            removeRelation(relation.id)
+            changeRelationStatus({
+              relationId: relation.id,
+              isSelected: false,
+              editing: false,
+              scale,
+            })
+            setTimeout(() => {
+              ref.current?.blur()
+            }, 0)
             changeMode('CURSOR')
           }
         }}
         onClick={(e) => {
           changeRelationStatus({ relationId: relation.id, isSelected: false, editing: true, scale })
-          changeMode('EDIT')
         }}
       />
       <svg

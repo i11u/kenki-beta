@@ -31,6 +31,11 @@ export type ColorTheme = {
   currentScaleText: string
   placeholderText: string
   textBlockText: string
+  hintText: string
+  hintBackground: string
+  hintDivider: string
+  codeColor: string
+  codeBackground: string
 }
 
 export const light: ColorTheme = {
@@ -64,6 +69,11 @@ export const light: ColorTheme = {
   currentScaleText: '#000000',
   placeholderText: '#888',
   textBlockText: '#000000',
+  hintText: '#efe8e8',
+  hintBackground: '#313131',
+  hintDivider: '#8a8a8a',
+  codeColor: '#737869',
+  codeBackground: '#e3e3e3',
 }
 
 export const dark: ColorTheme = {
@@ -89,14 +99,19 @@ export const dark: ColorTheme = {
   pageinfoBackground: '#373B40',
   boxShadow: '#282828',
   background: '#373B40',
-  editorButton: '#373B40',
+  editorButton: '#464646',
   pageTitleText: '#ffffff',
   pageTitleUnderline: '#ffffff',
-  collapseMenuBackground: '#ffffff',
+  collapseMenuBackground: '#464646',
   toolsetHintText: '#ffffff',
   currentScaleText: '#ffffff',
-  placeholderText: '#ffffff',
+  placeholderText: '#797979',
   textBlockText: '#ffffff',
+  hintText: '#ffffff',
+  hintBackground: '#464646',
+  hintDivider: '#dcdcdc',
+  codeColor: 'orange',
+  codeBackground: '#3a3a3a',
 }
 
 export const colorThemeAtom = atom<ColorTheme>(light)

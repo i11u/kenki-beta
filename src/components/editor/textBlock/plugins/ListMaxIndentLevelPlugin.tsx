@@ -32,7 +32,8 @@ function isIndentPermitted(maxDepth: number) {
 
   let totalDepth = 0
 
-  Array.from(elementNodesInSelection).map((elementNode) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const elementNode of elementNodesInSelection) {
     if ($isListNode(elementNode)) {
       totalDepth = Math.max($getListDepth(elementNode) + 1, totalDepth)
     } else if ($isListItemNode(elementNode)) {
@@ -42,7 +43,7 @@ function isIndentPermitted(maxDepth: number) {
       }
       totalDepth = Math.max($getListDepth(parent) + 1, totalDepth)
     }
-  })
+  }
 
   return totalDepth <= maxDepth
 }

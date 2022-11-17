@@ -6,11 +6,13 @@ import FontFamily from './fontFamily'
 import TextColor from './textColor'
 import TextHighlight from './textHighlight'
 import Alignment from './alignment'
+import { modeSelectors } from '../../../jotai-hooks/mode/selector'
 
 const TextTools = () => {
   const [optionKeyIsPressed, setOptionKeyIsPressed] = useState(false)
   const colorTheme = colorThemeSelector.useColorTheme()
   const [fontFamily, setFontFamily] = useState('sans-serif')
+  const mode = modeSelectors.useCurrentMode()
 
   /*
    * Register event handlers on keydown.
@@ -45,13 +47,15 @@ const TextTools = () => {
     }
   }, [optionKeyIsPressed, setOptionKeyIsPressed])
 
-  return !optionKeyIsPressed ? (
-    <div className="toolset-text-tools">
+  return optionKeyIsPressed || mode === 'SELECT' ? (
+    <TextToolsOptional />
+  ) : (
+    <div className="toolset-text-tools disabled">
       <div className="toolset-text-tools-description" style={{ color: `${colorTheme.text}` }}>
         toolset 1 (press option to switch toolsets)
       </div>
       <div
-        className="toolset-text-tools-container disabled"
+        className="toolset-text-tools-container"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,
@@ -65,8 +69,6 @@ const TextTools = () => {
         <div className="toolset-text-tools-item" />
       </div>
     </div>
-  ) : (
-    <TextToolsOptional />
   )
 }
 

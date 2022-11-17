@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useAtom } from 'jotai'
-import { PageUtils } from '../../../apis/page'
+import { PageUtils } from '../../../utils/page'
 import { blockSelectors } from '../../../jotai-hooks/blocks/selector'
 import { blocksActions } from '../../../jotai-hooks/blocks/action'
 import { PageConfig, pageConfigAtom } from '../../../jotai-hooks/pageConfig/atom'

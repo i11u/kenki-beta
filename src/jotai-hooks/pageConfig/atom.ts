@@ -20,5 +20,5 @@ export const pageConfigAtom = atom<PageConfig>({
   blockBorderIsVisible: true,
   editingTitle: false,
   title: '鍵記 kenki',
-  gridNum: { rowNum: 36, colNum: 64 },
+  gridNum: { rowNum: 72, colNum: 128 },
 })

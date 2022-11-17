@@ -17,7 +17,6 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-    background-color: #e3e3e3;
     padding: 0 0.2em;
     border-radius: 0.2em;
 }
@@ -81,8 +80,8 @@ Global property
 */
 .disabled {
     pointer-events: none;
-    opacity: 0.5;
-    background-color: var(--disabled-color) !important;
+    opacity: 0.4;
+    /*background-color: var(--disabled-color);*/
 }
 
 .display-none {
@@ -197,7 +196,6 @@ Editor styles
     display: flex;
     gap: 10px;
     z-index: var(--editor-floatings-z-index);
-
 }
 
 .editor-left-buttons-button {
@@ -205,11 +203,6 @@ Editor styles
     height: 20px;
     border: none;
     border-radius: 2px;
-}
-
-.editor-left-buttons-button-icon {
-    width: 18px;
-    height: 18px;
 }
 
 .editor-right-buttons {
@@ -235,6 +228,10 @@ Editor styles
     width: 30px;
     font-size: 12px;
     margin: auto;
+}
+
+.editor-hint {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .editor-breadcrumbs {
@@ -502,6 +499,7 @@ Lexical styles
     color: black;
     line-height: 30px;
     padding: 0 10px;
+    height: fit-content;
 }
 
 .editor-paragraph {
