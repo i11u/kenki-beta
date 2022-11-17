@@ -13,7 +13,7 @@ const TextColor = () => {
           color: `${colorTheme.text}`,
         }}
       >
-        color <code>⌘+f</code>
+        color
       </div>
       <div className="toolset-text-tools-item-content">
         <svg

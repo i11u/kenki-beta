@@ -6,6 +6,5 @@ export type Cursor = {
 }
 
 export const cursorAtom = atom<Cursor>({
-  // position: { row: 8, col: 16 },
-  position: { row: 0, col: 0 },
+  position: { row: 5, col: 2 },
 })

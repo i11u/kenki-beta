@@ -13,7 +13,7 @@ const TextHighlight = () => {
           color: `${colorTheme.text}`,
         }}
       >
-        highlight <code>⌘+f</code>
+        highlight
       </div>
       <div className="toolset-text-tools-item-content">
         <svg

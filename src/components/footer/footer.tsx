@@ -12,7 +12,6 @@ import { useRemoveAllRelations } from '../../jotai-hooks/relations/action'
 import { editorConfigActions } from '../../jotai-hooks/editorConfig/action'
 import { editorConfigSelectors } from '../../jotai-hooks/editorConfig/selector'
 import { pageConfigActions } from '../../jotai-hooks/pageConfig/action'
-import { pageConfigSelectors } from '../../jotai-hooks/pageConfig/selector'
 import { blocksAtom } from '../../jotai-hooks/blocks/atom'
 import { relationsAtom } from '../../jotai-hooks/relations/atom'
 
@@ -69,7 +68,7 @@ const Footer = () => {
   const colorTheme = colorThemeSelector.useColorTheme()
   const mode = modeSelectors.useCurrentMode()
   const { backgroundColor, color } = match(mode)
-    .with('NORMAL', () => ({
+    .with('CURSOR', () => ({
       backgroundColor: colorTheme.footer,
       color: colorTheme.text,
     }))
@@ -105,7 +104,10 @@ const Footer = () => {
       backgroundColor: colorTheme.footer,
       color: colorTheme.text,
     }))
-    .exhaustive()
+    .otherwise(() => ({
+      backgroundColor: colorTheme.footer,
+      color: colorTheme.text,
+    }))
 
   const [word, setWord] = useState('Enter command')
   const [buffer, setBuffer] = useState('')
@@ -144,8 +146,6 @@ const Footer = () => {
   }, [buffer, matchingCommands, selectedCommandIndex])
 
   const separationIsVisible = editorConfigSelectors.useSeparationIsVisible()
-  const aspectRatio = pageConfigSelectors.useAspectRatio()
-  const changeAspectRatio = pageConfigActions.useChangeAspectRatio()
   const toggleEditingTitle = pageConfigActions.useToggleEditingTitle()
 
   return (
@@ -187,14 +187,14 @@ const Footer = () => {
                       copyToClipboard()
                         .then((r) => window.alert('Copied current page to clipboard in json format.'))
                         .catch((error) => window.alert('Failed to copy current page to clipboard.'))
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                     })
                     .with('discard-page', () => {
                       if (window.confirm('Do you want to clear the current contents?')) {
                         removeBlocks()
                         removeRelations()
                       }
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                     })
                     .with('settings', () => {
                       changeMode('SETTINGS')
@@ -211,11 +211,8 @@ const Footer = () => {
                       toggleColorTheme()
                     })
                     .with('edit-title', () => {
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                       toggleEditingTitle()
-                    })
-                    .with('aspect-ratio', () => {
-                      changeAspectRatio(aspectRatio === 'document' ? 'slide' : 'document')
                     })
                     .otherwise(() => undefined)
                 } else {
@@ -226,14 +223,14 @@ const Footer = () => {
                       copyToClipboard()
                         .then((r) => window.alert('Copied current page to clipboard in json format.'))
                         .catch((error) => window.alert('Failed to copy current page to clipboard.'))
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                     })
                     .with('discard-page', () => {
                       if (window.confirm('Do you want to clear the current contents?')) {
                         removeBlocks()
                         removeRelations()
                       }
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                     })
                     .with('settings', () => {
                       changeMode('SETTINGS')
@@ -250,12 +247,8 @@ const Footer = () => {
                       toggleColorTheme()
                     })
                     .with('edit-title', () => {
-                      changeMode('NORMAL')
+                      changeMode('CURSOR')
                       toggleEditingTitle()
-                    })
-                    .with('aspect-ratio', () => {
-                      changeAspectRatio(aspectRatio === 'document' ? 'slide' : 'document')
-                      changeMode('NORMAL')
                     })
                     .otherwise(() => window.alert(`${word}: no such command`))
                 }

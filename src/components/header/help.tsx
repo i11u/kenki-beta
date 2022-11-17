@@ -18,7 +18,7 @@ const Help = () => {
       style={{ color: colorTheme.icon, height: '50%', transform: 'translateY(50%)' }}
       onClick={() => {
         if (mode === 'HELP') {
-          changeMode('NORMAL')
+          changeMode('CURSOR')
           toggleSidebarRight()
         } else if (mode === 'SETTINGS') {
           changeMode('HELP')

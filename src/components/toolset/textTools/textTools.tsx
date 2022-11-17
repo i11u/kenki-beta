@@ -17,14 +17,25 @@ const TextTools = () => {
    * */
   useEffect(() => {
     const keydownCallback = (e: KeyboardEvent) => {
-      match(e.key)
-        .with('Alt', () => setOptionKeyIsPressed(true))
-        .otherwise(() => console.log(''))
+      if (optionKeyIsPressed) {
+        match(e.key)
+          .with('h', () => setFontFamily('sans-serif'))
+          .with('ArrowDown', () => setFontFamily('serif'))
+          .otherwise(() => console.log(''))
+      } else {
+        match(e.key)
+          .with('Alt', () => setOptionKeyIsPressed(true))
+          .otherwise(() => console.log(''))
+      }
     }
     const keyupCallback = (e: KeyboardEvent) => {
-      match(e.key)
-        .with('Alt', () => setOptionKeyIsPressed(false))
-        .otherwise(() => console.log(''))
+      if (optionKeyIsPressed) {
+        match(e.key)
+          .with('Alt', () => setOptionKeyIsPressed(false))
+          .otherwise(() => console.log(''))
+      } else {
+        console.log('')
+      }
     }
     document.addEventListener('keydown', keydownCallback)
     document.addEventListener('keyup', keyupCallback)
@@ -40,7 +51,7 @@ const TextTools = () => {
         toolset 1 (press option to switch toolsets)
       </div>
       <div
-        className="toolset-text-tools-container"
+        className="toolset-text-tools-container disabled"
         style={{
           backgroundColor: `${colorTheme.editorButton}`,
           boxShadow: `0 2px 2px 2px ${colorTheme.boxShadow}`,

@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
-import UndoButton from './undoButton'
-import ToggleSidebarButton from './toggleSidebarButton'
-import RedoButton from './redoButton'
-import TogglePageinfoButton from './togglePageinfoButton.'
-import Breadcrumbs from './breadcrumbs'
+import UndoButton from './header/undoButton'
+import ToggleSidebarButton from './header/toggleSidebarButton'
+import RedoButton from './header/redoButton'
+import TogglePageinfoButton from './header/togglePageinfoButton.'
+import Breadcrumbs from './header/breadcrumbs'
 import Toolset from '../toolset/toolset'
-import { EditorState } from '../types'
 import useEditorResize from './hooks/useEditorResize'
 import useKeydownHandler from './hooks/useKeydownHandler'
-import ZoomOutButton from './zoomOutButton'
-import CurrentScale from './currentScale'
-import ZoomInButton from './zoomInButton'
-import PageTitle from './pageTitle'
+import ZoomOutButton from './header/zoomOutButton'
+import CurrentScale from './header/currentScale'
+import ZoomInButton from './header/zoomInButton'
 import Page from './page'
+import { Mode } from '../../jotai-hooks/mode/atom'
 
 type Props = {
   workingModuleIndex: number
@@ -34,7 +33,7 @@ const Editor = ({
   pageinfoWidth,
   setPageInfoIsVisible,
 }: Props) => {
-  const [editorState, setEditorState] = useState<EditorState>('CURSOR')
+  const [editorState, setEditorState] = useState<Mode>('CURSOR')
   const colorTheme = colorThemeSelector.useColorTheme()
 
   /*
@@ -71,7 +70,6 @@ const Editor = ({
         <TogglePageinfoButton />
       </div>
       <Breadcrumbs />
-      <PageTitle />
       <div
         className="editor-right-buttons"
         style={{
@@ -83,7 +81,7 @@ const Editor = ({
         <CurrentScale />
         <ZoomInButton />
       </div>
-      <Toolset editorState={editorState} setEditorState={setEditorState} />
+      <Toolset />
       <Page />
     </div>
   )

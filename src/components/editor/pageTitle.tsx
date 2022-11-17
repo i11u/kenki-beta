@@ -1,14 +1,14 @@
 import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
+import { pageConfigSelectors } from '../../jotai-hooks/pageConfig/selector'
 
 const PageTitle = () => {
-  let currentPageId: string
-  let title: string
   const colorTheme = colorThemeSelector.useColorTheme()
+  const title = pageConfigSelectors.useTitle()
 
   return (
     <div className="editor-page-title">
       <div className="editor-page-title-text" style={{ color: `${colorTheme.pageTitleText}` }}>
-        鍵記 kenki
+        {title}
       </div>
       <div
         className="editor-page-title-underline"

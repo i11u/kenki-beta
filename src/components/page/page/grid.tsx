@@ -40,16 +40,18 @@ const VerticalLine = styled.div<{ col: number; rowNum: number; colNum: number }>
   position: absolute;
   width: 1px;
   height: 100%;
-  left: ${(props) => (100 / props.colNum) * props.col}%;
+  left: ${(props) => 30 * props.col}px;
   pointer-events: none;
+  z-index: 0;
 `
 
 const HorizontalLine = styled.div<{ row: number; rowNum: number; colNum: number }>`
   position: absolute;
   width: 100%;
   height: 1px;
-  top: ${(props) => (100 / props.rowNum) * props.row}%;
+  top: ${(props) => 30 * props.row}px;
   pointer-events: none;
+  z-index: 0;
 `
 
 export default React.memo(Grid)

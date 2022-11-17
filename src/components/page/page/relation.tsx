@@ -35,8 +35,6 @@ const RelationTSX = ({ relationAtom }: { relationAtom: PrimitiveAtom<Relation> }
   const scale = pageConfigSelectors.usePageScale()
   const mode = modeSelectors.useCurrentMode()
 
-  const aspectRatio = pageConfigSelectors.useAspectRatio()
-
   useEffect(() => {
     changeRelationStatus({
       relationId: relation.id,
@@ -168,7 +166,7 @@ const RelationTSX = ({ relationAtom }: { relationAtom: PrimitiveAtom<Relation> }
         display:
           top === 'calc(0%)' || left === 'calc(0%)' || width === 'calc(0%)' || height === 'calc(0%)' ? 'none' : 'block',
         zIndex: 0,
-        opacity: mode === 'SELECT' ? '0.2' : '',
+        opacity: mode === 'BLOCKHINT' ? '0.2' : '',
       }}
     >
       <input
@@ -182,7 +180,7 @@ const RelationTSX = ({ relationAtom }: { relationAtom: PrimitiveAtom<Relation> }
           transform: 'translate(-60%, -40%)',
           width: 'auto',
           height: '14px',
-          fontSize: aspectRatio === 'document' ? '14px' : '10px',
+          fontSize: '14px',
           resize: 'none',
           outline: 'none',
           border: relation.editing ? `0.5px dashed ${colorTheme.text}` : 'none',
@@ -208,7 +206,7 @@ const RelationTSX = ({ relationAtom }: { relationAtom: PrimitiveAtom<Relation> }
             changeMode('SELECT')
           } else if (e.key === 'Escape') {
             removeRelation(relation.id)
-            changeMode('NORMAL')
+            changeMode('CURSOR')
           }
         }}
         onClick={(e) => {

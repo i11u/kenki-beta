@@ -41,7 +41,6 @@ const useKeydownHandler = () => {
   const toggleGridIsVisible = pageConfigActions.useToggleGridIsVisible()
   const toggleBlockBorderIsVisible = pageConfigActions.useToggleBlockBorderIsVisible()
   const toggleSeparationIsVisible = editorConfigActions.useToggleSeparationIsVisible()
-  const toggleAspectRatio = pageConfigActions.useToggleAspectRatio()
   const editingTitle = pageConfigSelectors.useEditingTitle()
 
   const linkHintCharacters = 'sadfjklewcmpgh'
@@ -65,90 +64,82 @@ const useKeydownHandler = () => {
         .reduce((prev, curr) => prev + curr, '')
     )
   }
+
   useEffect(() => {
     let buffer = ''
     const callback = (e: KeyboardEvent): void => {
       buffer += e.key
       return (
         match(mode)
-          .with('NORMAL', () => {
+          .with('CURSOR', () => {
+            e.preventDefault()
             console.log(buffer)
             if (editingTitle) return
             match(buffer)
-              .with('Shift', () => {
-                buffer = ''
-              })
-              .with(':', () => {
-                e.preventDefault()
-                changeMode('COMMAND')
-              })
               .with('h', () => {
-                moveCursor({ direction: 'left', offset: 1 })
+                if (e.ctrlKey) {
+                  document.getElementsByClassName('editor')[0]?.scrollBy({
+                    top: 0,
+                    left: -100,
+                    behavior: 'smooth',
+                  })
+                } else {
+                  moveCursor({ direction: 'left', offset: 1 })
+                }
                 buffer = ''
               })
               .with('j', () => {
-                moveCursor({ direction: 'down', offset: 1 })
+                if (e.ctrlKey) {
+                  document.getElementsByClassName('editor')[0]?.scrollBy({
+                    top: 100,
+                    left: 0,
+                    behavior: 'smooth',
+                  })
+                } else {
+                  moveCursor({ direction: 'down', offset: 1 })
+                }
                 buffer = ''
               })
               .with('k', () => {
-                moveCursor({ direction: 'up', offset: 1 })
+                if (e.ctrlKey) {
+                  document.getElementsByClassName('editor')[0]?.scrollBy({
+                    top: -100,
+                    left: 0,
+                    behavior: 'smooth',
+                  })
+                } else {
+                  moveCursor({ direction: 'up', offset: 1 })
+                }
                 buffer = ''
               })
               .with('l', () => {
                 if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
                   toggleColorTheme()
+                } else if (e.ctrlKey) {
+                  document.getElementsByClassName('editor')[0]?.scrollBy({
+                    top: 0,
+                    left: 100,
+                    behavior: 'smooth',
+                  })
                 } else {
                   moveCursor({ direction: 'right', offset: 1 })
                 }
                 buffer = ''
               })
               .with('H', () => {
-                if (e.metaKey) {
-                  document.getElementById('background')?.scrollBy({
-                    top: 0,
-                    left: -100,
-                    behavior: 'smooth',
-                  })
-                } else {
-                  moveCursor({ direction: 'left', offset: 3 })
-                }
+                moveCursor({ direction: 'left', offset: 2 })
                 buffer = ''
               })
               .with('J', () => {
-                if (e.metaKey) {
-                  document.getElementById('background')?.scrollBy({
-                    top: 100,
-                    left: 0,
-                    behavior: 'smooth',
-                  })
-                } else {
-                  moveCursor({ direction: 'down', offset: 3 })
-                }
+                moveCursor({ direction: 'down', offset: 2 })
                 buffer = ''
               })
               .with('K', () => {
-                if (e.metaKey) {
-                  document.getElementById('background')?.scrollBy({
-                    top: -100,
-                    left: 0,
-                    behavior: 'smooth',
-                  })
-                } else {
-                  moveCursor({ direction: 'up', offset: 3 })
-                }
+                moveCursor({ direction: 'up', offset: 2 })
                 buffer = ''
               })
               .with('L', () => {
-                if (e.metaKey) {
-                  document.getElementById('background')?.scrollBy({
-                    top: 0,
-                    left: 100,
-                    behavior: 'smooth',
-                  })
-                } else {
-                  moveCursor({ direction: 'right', offset: 3 })
-                }
+                moveCursor({ direction: 'right', offset: 2 })
                 buffer = ''
               })
               .with('+', () => {
@@ -159,11 +150,13 @@ const useKeydownHandler = () => {
                 changeScale(currentScale - 0.1)
                 buffer = ''
               })
+              .with('g', () => {
+                toggleGridIsVisible()
+                buffer = ''
+              })
               .with('t', () => {
                 createBlock(BlockUtils.emptyBlock({ position: cursorPosition }))
-                changeMode('EDIT')
-                buffer = ''
-                e.preventDefault()
+                changeMode('TEXT')
                 buffer = ''
               })
               .with('f', () => {
@@ -183,59 +176,29 @@ const useKeydownHandler = () => {
                   const cellHeight = document.getElementById('cursor')?.clientHeight as number
                   hint.style.width = `calc(${cellWidth}px + ${cellWidth * (labels[i].length - 1) * 0.5}px)`
                   hint.style.height = `${cellHeight}px`
-                  hint.style.marginTop = '-20px'
-                  hint.style.marginLeft = '-20px'
+                  hint.style.marginTop = `${-20 + blockDOM.getBoundingClientRect().top}px`
+                  hint.style.marginLeft = `${-20 + blockDOM.getBoundingClientRect().left}px`
                   hint.style.border = '1px solid gray'
                   hint.style.borderRadius = '2px'
                   hint.style.fontFamily = 'Monaco, sans-serif'
                   hint.style.fontSize = 'auto'
                   hint.style.textAlign = 'center'
+                  hint.style.zIndex = '100'
                   return hint
                 })
                 hints.map((hint) =>
-                  (document.getElementById(`block-${hint.id}-wrapper`) as HTMLElement).appendChild(hint)
+                  (document.getElementsByClassName(`editor-page`)[0] as HTMLElement).appendChild(hint)
                 )
-                // const hintContainerDiv = DomUtils.addElementList(
-                //   hints,
-                //   document.getElementById('page') as HTMLElement,
-                //   {
-                //     id: 'hintContainer',
-                //     className: '',
-                //   }
-                // )
-                buffer = ''
-              })
-              .with('g', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleGridIsVisible()
-                }
                 buffer = ''
               })
               .with('v', () => {
                 if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
                   toggleBlockBorderIsVisible()
-                }
-                buffer = ''
-              })
-              .with('s', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleSeparationIsVisible()
-                }
-                buffer = ''
-              })
-              .with('a', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleAspectRatio()
                 }
                 buffer = ''
               })
               .with(',', () => {
                 if (e.metaKey) {
-                  e.preventDefault()
                   changeMode('SETTINGS')
                   toggleSidebarRight()
                 }
@@ -243,75 +206,69 @@ const useKeydownHandler = () => {
               })
               .with('.', () => {
                 if (e.metaKey) {
-                  e.preventDefault()
                   changeMode('HELP')
                   toggleSidebarRight()
                 }
                 buffer = ''
               })
-              .with('Tab', () => {
-                e.preventDefault()
-                buffer = ''
-              })
               .otherwise(() => {
-                if (document.getElementById('shadowContainer')) {
-                  DomUtils.removeElement(document.getElementById('shadowContainer') as HTMLDivElement)
-                }
-                if (/^\d+$/.test(buffer)) {
-                  const cursorDOM = document.getElementById('cursor') as HTMLDivElement
-                  const offset = Number(buffer)
-                  const cellWidth = 100 / gridNum.colNum
-                  const cellHeight = 100 / gridNum.rowNum
-                  const directions: Direction[] = ['left', 'down', 'up', 'right']
-                  const shadows = directions.map((direction) => {
-                    const shadow = cursorDOM.cloneNode(true) as HTMLDivElement
-                    shadow.id = ''
-                    shadow.style.position = 'absolute'
-                    shadow.style.opacity = '0.2'
-                    match(direction)
-                      .with('left', () => {
-                        shadow.style.left = `${cellWidth * (cursorPosition.col - offset)}%`
-                      })
-                      .with('down', () => {
-                        shadow.style.top = `${cellHeight * (cursorPosition.row + offset)}%`
-                      })
-                      .with('up', () => {
-                        shadow.style.top = `${cellHeight * (cursorPosition.row - offset)}%`
-                      })
-                      .with('right', () => {
-                        shadow.style.left = `${cellWidth * (cursorPosition.col + offset)}%`
-                      })
-                      .exhaustive()
-                    return shadow
-                  })
-                  const shadowContainerDiv = DomUtils.addElementList(
-                    shadows,
-                    document.getElementById('page') as HTMLElement,
-                    {
-                      id: 'shadowContainer',
-                      className: '',
-                    }
-                  )
-                } else if (/^\d+h$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveCursor({ direction: 'left', offset })
-                  buffer = ''
-                } else if (/^\d+j$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveCursor({ direction: 'down', offset })
-                  buffer = ''
-                } else if (/^\d+k$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveCursor({ direction: 'up', offset })
-                  buffer = ''
-                } else if (/^\d+l$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveCursor({ direction: 'right', offset })
-                  buffer = ''
-                } else {
-                  // e.preventDefault()
-                  buffer = ''
-                }
+                // if (document.getElementById('shadowContainer')) {
+                //   DomUtils.removeElement(document.getElementById('shadowContainer') as HTMLDivElement)
+                // }
+                // if (/^\d+$/.test(buffer)) {
+                //   const cursorDOM = document.getElementById('cursor') as HTMLDivElement
+                //   const offset = Number(buffer)
+                //   const cellWidth = 100 / gridNum.colNum
+                //   const cellHeight = 100 / gridNum.rowNum
+                //   const directions: Direction[] = ['left', 'down', 'up', 'right']
+                //   const shadows = directions.map((direction) => {
+                //     const shadow = cursorDOM.cloneNode(true) as HTMLDivElement
+                //     shadow.id = ''
+                //     shadow.style.position = 'absolute'
+                //     shadow.style.opacity = '0.2'
+                //     match(direction)
+                //       .with('left', () => {
+                //         shadow.style.left = `${cellWidth * (cursorPosition.col - offset)}%`
+                //       })
+                //       .with('down', () => {
+                //         shadow.style.top = `${cellHeight * (cursorPosition.row + offset)}%`
+                //       })
+                //       .with('up', () => {
+                //         shadow.style.top = `${cellHeight * (cursorPosition.row - offset)}%`
+                //       })
+                //       .with('right', () => {
+                //         shadow.style.left = `${cellWidth * (cursorPosition.col + offset)}%`
+                //       })
+                //       .exhaustive()
+                //     return shadow
+                //   })
+                //   const shadowContainerDiv = DomUtils.addElementList(
+                //     shadows,
+                //     document.getElementById('page') as HTMLElement,
+                //     {
+                //       id: 'shadowContainer',
+                //       className: '',
+                //     }
+                //   )
+                // } else if (/^\d+h$/g.test(buffer)) {
+                //   const offset = Number(buffer.slice(0, -1))
+                //   moveCursor({ direction: 'left', offset })
+                //   buffer = ''
+                // } else if (/^\d+j$/g.test(buffer)) {
+                //   const offset = Number(buffer.slice(0, -1))
+                //   moveCursor({ direction: 'down', offset })
+                //   buffer = ''
+                // } else if (/^\d+k$/g.test(buffer)) {
+                //   const offset = Number(buffer.slice(0, -1))
+                //   moveCursor({ direction: 'up', offset })
+                //   buffer = ''
+                // } else if (/^\d+l$/g.test(buffer)) {
+                //   const offset = Number(buffer.slice(0, -1))
+                //   moveCursor({ direction: 'right', offset })
+                //   buffer = ''
+                // } else {
+                buffer = ''
+                // }
               })
           })
           .with('INSERT', () =>
@@ -322,7 +279,6 @@ const useKeydownHandler = () => {
                 buffer = ''
               })
               .with('Enter', () => {
-                e.preventDefault()
                 buffer = ''
               })
               .with('l', () => {
@@ -335,40 +291,34 @@ const useKeydownHandler = () => {
                 buffer = ''
               })
           )
-          .with('COMMAND', () =>
-            match(buffer)
+          // .with('COMMAND', () =>
+          //   match(buffer)
+          //     .with('Escape', () => {
+          //       changeMode('CURSOR')
+          //       buffer = ''
+          //     })
+          //     .with('l', () => {
+          //       if (e.shiftKey && e.metaKey) {
+          //         toggleColorTheme()
+          //       }
+          //       buffer = ''
+          //     })
+          //     //  In COMMAND mode, keystrokes are handled by listeners defined in each component.
+          //     .otherwise(() => {
+          //       buffer = ''
+          //     })
+          // )
+          .with('TEXT', () => {
+            match(e.key)
               .with('Escape', () => {
-                changeMode('NORMAL')
+                changeMode('CURSOR')
+                changeBlockStatus({
+                  blockId: editingBlockId as string,
+                  isEmpty: false,
+                  isSelected: false,
+                  editing: false,
+                })
                 buffer = ''
-              })
-              .with('l', () => {
-                if (e.shiftKey && e.metaKey) {
-                  toggleColorTheme()
-                }
-                buffer = ''
-              })
-              //  In COMMAND mode, keystrokes are handled by listeners defined in each component.
-              .otherwise(() => {
-                buffer = ''
-              })
-          )
-          .with('EDIT', () => {
-            match(buffer)
-              .with('Escape', () => {
-                if (editingBlock) {
-                  changeBlockStatus({
-                    blockId: editingBlockId as string,
-                    isEmpty: editingBlock.isEmpty,
-                    isSelected: false,
-                    editing: false,
-                  })
-                  changeMode('NORMAL')
-                  moveCursorByPosition({
-                    row: editingBlock.position.row + editingBlock.height - 1,
-                    col: editingBlock.position.col + editingBlock.width - 1,
-                  })
-                  buffer = ''
-                }
               })
               .with('v', () => {
                 if (e.ctrlKey) {
@@ -383,17 +333,6 @@ const useKeydownHandler = () => {
                 }
                 buffer = ''
               })
-              .with('l', () => {
-                if (e.shiftKey && e.metaKey) {
-                  toggleColorTheme()
-                }
-                buffer = ''
-              })
-              .with('Tab', () => {
-                e.preventDefault()
-                buffer = ''
-              })
-              //  In EDIT mode, keystrokes are handled by listeners defined in each component.
               .otherwise(() => {
                 buffer = ''
               })
@@ -412,7 +351,7 @@ const useKeydownHandler = () => {
                   row: selectedBlock.position.row + selectedBlock.height - 1,
                   col: selectedBlock.position.col + selectedBlock.width - 1,
                 })
-                changeMode('NORMAL')
+                changeMode('CURSOR')
                 buffer = ''
               })
               .with('i', () => {
@@ -422,7 +361,7 @@ const useKeydownHandler = () => {
                   isSelected: false,
                   editing: true,
                 })
-                changeMode('EDIT')
+                changeMode('TEXT')
                 buffer = ''
               })
               //  selectedBlockId is known to exist when entering SELECT mode.
@@ -443,19 +382,19 @@ const useKeydownHandler = () => {
                 buffer = ''
               })
               .with('H', () => {
-                moveBlock({ blockId: selectedBlocks[0].id, direction: 'left', offset: 3 })
+                moveBlock({ blockId: selectedBlocks[0].id, direction: 'left', offset: 2 })
                 buffer = ''
               })
               .with('J', () => {
-                moveBlock({ blockId: selectedBlocks[0].id, direction: 'down', offset: 3 })
+                moveBlock({ blockId: selectedBlocks[0].id, direction: 'down', offset: 2 })
                 buffer = ''
               })
               .with('K', () => {
-                moveBlock({ blockId: selectedBlocks[0].id, direction: 'up', offset: 3 })
+                moveBlock({ blockId: selectedBlocks[0].id, direction: 'up', offset: 2 })
                 buffer = ''
               })
               .with('L', () => {
-                moveBlock({ blockId: selectedBlocks[0].id, direction: 'right', offset: 3 })
+                moveBlock({ blockId: selectedBlocks[0].id, direction: 'right', offset: 2 })
                 buffer = ''
               })
               .with('r', () => {
@@ -472,7 +411,7 @@ const useKeydownHandler = () => {
                 // document.getElementById(`block-${block.id}`)?.remove()
                 removeBlock(block.id)
                 moveCursorByPosition(block.position)
-                changeMode('NORMAL')
+                changeMode('CURSOR')
                 buffer = ''
               })
               .with('l', () => {
@@ -525,40 +464,33 @@ const useKeydownHandler = () => {
                       className: '',
                     }
                   )
-                } else if (/^\d+h$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveBlock({ blockId: selectedBlocks[0].id, direction: 'left', offset })
-                  buffer = ''
-                } else if (/^\d+j$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveBlock({ blockId: selectedBlocks[0].id, direction: 'down', offset })
-                  buffer = ''
-                } else if (/^\d+k$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveBlock({ blockId: selectedBlocks[0].id, direction: 'up', offset })
-                  buffer = ''
-                } else if (/^\d+l$/g.test(buffer)) {
-                  const offset = Number(buffer.slice(0, -1))
-                  moveBlock({ blockId: selectedBlocks[0].id, direction: 'right', offset })
-                  buffer = ''
+                  // } else if (/^\d+h$/g.test(buffer)) {
+                  //   const offset = Number(buffer.slice(0, -1))
+                  //   moveBlock({ blockId: selectedBlocks[0].id, direction: 'left', offset })
+                  //   buffer = ''
+                  // } else if (/^\d+j$/g.test(buffer)) {
+                  //   const offset = Number(buffer.slice(0, -1))
+                  //   moveBlock({ blockId: selectedBlocks[0].id, direction: 'down', offset })
+                  //   buffer = ''
+                  // } else if (/^\d+k$/g.test(buffer)) {
+                  //   const offset = Number(buffer.slice(0, -1))
+                  //   moveBlock({ blockId: selectedBlocks[0].id, direction: 'up', offset })
+                  //   buffer = ''
+                  // } else if (/^\d+l$/g.test(buffer)) {
+                  //   const offset = Number(buffer.slice(0, -1))
+                  //   moveBlock({ blockId: selectedBlocks[0].id, direction: 'right', offset })
+                  //   buffer = ''
                 } else {
                   e.preventDefault()
                   buffer = ''
                 }
               })
           })
-          //  MULTISELECT mode is disabled for now
-          .with('MULTISELECT', () =>
-            match(buffer)
-              .with('Escape', () => changeMode('NORMAL'))
-              .with('v', () => changeMode('SELECT'))
-              .otherwise(() => e.preventDefault())
-          )
           .with('BLOCKHINT', () => {
             match(e.key)
               .with('Escape', () => {
                 DomUtils.removeElements(document.getElementsByClassName('hint'))
-                changeMode('NORMAL')
+                changeMode('CURSOR')
                 buffer = ''
               })
               .otherwise(() => {
@@ -604,102 +536,14 @@ const useKeydownHandler = () => {
                 })
                 if (noMatch) {
                   DomUtils.removeElements(document.getElementsByClassName('hint'))
-                  changeMode('NORMAL')
+                  changeMode('CURSOR')
                   buffer = ''
                   return false
                 }
                 return false
               })
           })
-          .with('SETTINGS', () =>
-            match(buffer)
-              .with('Escape', () => {
-                toggleSidebarRight()
-                changeMode('NORMAL')
-                buffer = ''
-              })
-              .with(',', () => {
-                if (e.metaKey) {
-                  e.preventDefault()
-                  changeMode('NORMAL')
-                  toggleSidebarRight()
-                }
-                buffer = ''
-              })
-              .with('.', () => {
-                if (e.metaKey) {
-                  e.preventDefault()
-                  changeMode('HELP')
-                }
-                buffer = ''
-              })
-              .with('l', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleColorTheme()
-                }
-                buffer = ''
-              })
-              .with('s', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleSeparationIsVisible()
-                }
-                buffer = ''
-              })
-              .with('g', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleGridIsVisible()
-                }
-                buffer = ''
-              })
-              .with('v', () => {
-                if (e.shiftKey && e.metaKey) {
-                  e.preventDefault()
-                  toggleBlockBorderIsVisible()
-                }
-                buffer = ''
-              })
-              //  In COMMAND mode, keystrokes are handled by listeners defined in each component.
-              .otherwise(() => {
-                buffer = ''
-              })
-          )
-          .with('HELP', () => {
-            match(buffer)
-              .with('Escape', () => {
-                toggleSidebarRight()
-                changeMode('NORMAL')
-                buffer = ''
-              })
-              .with('l', () => {
-                if (e.shiftKey && e.metaKey) {
-                  toggleColorTheme()
-                }
-                buffer = ''
-              })
-              .with('.', () => {
-                if (e.metaKey) {
-                  e.preventDefault()
-                  changeMode('NORMAL')
-                  toggleSidebarRight()
-                }
-                buffer = ''
-              })
-              .with(',', () => {
-                if (e.metaKey) {
-                  e.preventDefault()
-                  changeMode('SETTINGS')
-                }
-                buffer = ''
-              })
-              //  In COMMAND mode, keystrokes are handled by listeners defined in each component.
-              .otherwise(() => {
-                buffer = ''
-              })
-          })
-          .exhaustive()
+          .otherwise(() => console.log('a'))
       )
     }
     document.addEventListener('keydown', callback)
@@ -729,7 +573,6 @@ const useKeydownHandler = () => {
     toggleGridIsVisible,
     toggleBlockBorderIsVisible,
     toggleSeparationIsVisible,
-    toggleAspectRatio,
     editingTitle,
   ])
 }

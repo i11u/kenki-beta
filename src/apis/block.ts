@@ -6,12 +6,12 @@ export class BlockUtils {
   private static isInterrupted = false
 
   public static style = (block: Block, gridNum: { rowNum: number; colNum: number }, blockBorderIsVisible: boolean) => ({
-    top: `calc(${block.position.row * (100 / gridNum.rowNum)}% ${blockBorderIsVisible ? '' : '+ 1px'})`,
-    left: `calc(${block.position.col * (100 / gridNum.colNum)}% ${blockBorderIsVisible ? '' : '+ 1px'})`,
-    width: `calc(${100 / gridNum.colNum}% - 1px + ${(100 / gridNum.colNum) * (block.width - 1)}%)`,
-    height: `calc(${100 / gridNum.rowNum}% - 1px + ${(100 / gridNum.rowNum) * (block.height - 1)}%)`,
-    minWidth: `calc(${100 / gridNum.colNum}% - 1px)`,
-    minHeight: `calc(${100 / gridNum.rowNum}% - 1px)`,
+    top: `${block.position.row * 30}px`,
+    left: `${block.position.col * 30}px`,
+    width: `${block.width * 30 - 1}px`,
+    height: `${block.height * 30 - 1}px`,
+    minWidth: '29px',
+    minHeight: '29px',
   })
 
   static composeBlock = (
@@ -48,40 +48,43 @@ export class BlockUtils {
    * the wrapper will resize according to the size of the blocks.
    * */
   public static handleOnInput = ({
-    e,
     id,
     changeBlockSize,
     cellLength,
     updateInnerHTML,
   }: {
-    e: React.FormEvent<HTMLDivElement>
     id: string
     changeBlockSize: ({ blockId, width, height }: { blockId: string; width: number; height: number }) => void
     cellLength: number
     updateInnerHTML: ({ blockId, innerHTML }: { blockId: string; innerHTML: string }) => void
   }) => {
     const block = document.getElementById(`block-${id}`) as HTMLDivElement
+    const placeholder = document.getElementById(`placeholder-${id}`)
     updateInnerHTML({ blockId: id, innerHTML: block.innerHTML ? block.innerHTML : '' })
-    return block.textContent === '' && block.childElementCount === 0
+    return placeholder !== null
+      ? changeBlockSize({
+          blockId: id,
+          width: Math.ceil(Math.max(block.clientWidth, placeholder.clientWidth) / cellLength),
+          height: Math.ceil(Math.max(block.clientHeight, placeholder.clientHeight) / cellLength),
+        })
+      : block.textContent === ''
       ? changeBlockSize({ blockId: id, width: 1, height: 1 })
       : changeBlockSize({
           blockId: id,
-          width: Math.ceil((block.clientWidth - 1) / cellLength),
-          height: Math.ceil((block.clientHeight - 1) / cellLength),
+          width: Math.ceil(block.clientWidth / cellLength),
+          height: Math.ceil(block.clientHeight / cellLength),
         })
   }
 
   /**
    * Unsettled blocks will move when arrow keys are pressed,
-   * without any element inside of contenteditable.
+   * without any element inside contenteditable.
    * */
   public static handleOnKeyDownWrapper = ({
     e,
     id,
     block,
-    nextBlock,
     changeBlockPosition,
-    changeBlockStatus,
     blockDOM,
     rowNum,
     colNum,
@@ -119,18 +122,6 @@ export class BlockUtils {
 
     if (block.isSelected) {
       switch (key) {
-        // case 9: // Tab
-        //   e.preventDefault()
-        //   changeBlockStatus({ blockId: id, isEmpty: block.isEmpty, isSelected: false, editing: false })
-        //   if (nextBlock.id !== id) {
-        //     changeBlockStatus({
-        //       blockId: nextBlock.id,
-        //       isEmpty: nextBlock.isEmpty,
-        //       isSelected: true,
-        //       editing: true,
-        //     })
-        //   }
-        //   break
         case 37: // ArrowLeft
           e.preventDefault()
           if (col > 0) {

@@ -3,8 +3,12 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Helvetica Neue",
+    Arial,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans",
+    Meiryo,
+    sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
@@ -55,6 +59,7 @@ Variables
     --item-text-size: 16px;
     --breadcrumb-text-size: 14px;
     --page-title-text-size: 28px;
+    --text-block-font-size: 16px;
 
     /*
     z-index
@@ -191,6 +196,8 @@ Editor styles
     position: fixed;
     display: flex;
     gap: 10px;
+    z-index: var(--editor-floatings-z-index);
+
 }
 
 .editor-left-buttons-button {
@@ -198,7 +205,6 @@ Editor styles
     height: 20px;
     border: none;
     border-radius: 2px;
-    z-index: var(--editor-floatings-z-index);
 }
 
 .editor-left-buttons-button-icon {
@@ -210,6 +216,7 @@ Editor styles
     position: fixed;
     display: flex;
     gap: 10px;
+    z-index: var(--editor-floatings-z-index);
 }
 
 .editor-right-buttons-button {
@@ -217,7 +224,6 @@ Editor styles
     height: 20px;
     border: none;
     border-radius: 2px;
-    z-index: var(--editor-floatings-z-index);
 }
 
 .editor-right-buttons-button-icon {
@@ -226,6 +232,7 @@ Editor styles
 }
 
 .editor-current-scale {
+    width: 30px;
     font-size: 12px;
     margin: auto;
 }
@@ -254,18 +261,19 @@ Editor styles
     position: absolute;
     top: 80px;
     left: 60px;
-    z-index: var(--editor-page-z-index);
+    z-index: var(--editor-floatings-z-index);
 }
 
 .editor-page-title-text {
     font-size: var(--page-title-text-size);
-    margin: 0;
+    margin: 0 10px;
     padding: 0;
 }
 
 .editor-page-title-underline {
-    width: 200px;
+    width: 180px;
     height: 1px;
+    margin-top: -3px;
 }
 
 /*
@@ -479,4 +487,86 @@ Toolset styles
     height: auto;
     font-size: 12px;
     white-space: nowrap;
+}
+
+/*
+Lexical styles
+*/
+
+.text-block {
+    font-size: var(--text-block-font-size) !important;
+    outline: none;
+    white-space: pre !important;
+    text-justify: inter-ideograph;
+    pointer-events: none;
+    color: black;
+    line-height: 30px;
+    padding: 0 10px;
+}
+
+.editor-paragraph {
+    margin: 0 !important;
+}
+
+h1 {
+    height: 60px;
+    font-size: 36px;
+    margin: 0 !important;
+    line-height: 60px;
+}
+
+h2 {
+    height: 60px;
+    font-size: 30px;
+    margin: 0 !important;
+    line-height: 60px;
+}
+
+h3 {
+    height: 60px;
+    font-size: 24px;
+    margin: 0 !important;
+    line-height: 60px;
+}
+
+.ltr {
+    text-align: left;
+}
+
+.rtl {
+    text-align: right;
+}
+
+.editor-list-ol {
+    margin: 0 !important;
+}
+
+.editor-list-ul {
+    margin: 0 !important;
+}
+
+.editor-listitem {
+    margin-left: 0 !important;
+}
+
+.editor-nested-listitem {
+    margin: 0;
+    list-style-type: none;
+}
+
+ul {
+    padding-inline-start: 20px;
+}
+
+ol {
+    padding-inline-start: 20px;
+}
+
+.editor-placeholder {
+    position: absolute;
+    margin: 0 10px;
+    pointer-events: none;
+    user-select: none;
+    white-space: pre;
+    line-height: 30px;
 }

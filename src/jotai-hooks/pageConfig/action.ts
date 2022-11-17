@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 import { useAtomCallback } from 'jotai/utils'
-import { AspectRatioType, pageConfigAtom } from './atom'
+import { GridNum, pageConfigAtom } from './atom'
 
 type PageConfigActions = {
-  useChangeAspectRatio: () => (aspectRatio: AspectRatioType) => void
-  useToggleAspectRatio: () => () => void
+  useChangeGridNum: () => (gridNum: GridNum) => void
   useChangeScale: () => (scale: number) => void
   useToggleGridIsVisible: () => () => void
   useToggleBlockBorderIsVisible: () => () => void
@@ -12,28 +11,18 @@ type PageConfigActions = {
 }
 
 export const pageConfigActions: PageConfigActions = {
-  useChangeAspectRatio: () =>
+  useChangeGridNum: () =>
     useAtomCallback(
       useCallback(
-        (get, set, aspectRatio) =>
+        (get, set, gridNum) =>
           set(pageConfigAtom, (prev) => ({
             ...prev,
-            aspectRatio,
+            gridNum,
           })),
         []
       )
     ),
-  useToggleAspectRatio: () =>
-    useAtomCallback(
-      useCallback(
-        (get, set) =>
-          set(pageConfigAtom, (prev) => ({
-            ...prev,
-            aspectRatio: prev.aspectRatio === 'slide' ? 'document' : 'slide',
-          })),
-        []
-      )
-    ),
+
   useChangeScale: () =>
     useAtomCallback(
       useCallback((get, set, scale) => {
@@ -50,7 +39,7 @@ export const pageConfigActions: PageConfigActions = {
       useCallback((get, set) => {
         set(pageConfigAtom, (prev) => ({
           ...prev,
-          grid: !prev.grid,
+          gridIsVisible: !prev.gridIsVisible,
         }))
       }, [])
     ),
@@ -59,7 +48,7 @@ export const pageConfigActions: PageConfigActions = {
       useCallback((get, set) => {
         set(pageConfigAtom, (prev) => ({
           ...prev,
-          blockBorder: !prev.blockBorder,
+          blockBorderIsVisible: !prev.blockBorderIsVisible,
         }))
       }, [])
     ),

@@ -1,4 +1,4 @@
-import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
+import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
 
 const ToggleSidebarButton = () => {
   let toggleSidebar: () => void
@@ -7,7 +7,7 @@ const ToggleSidebarButton = () => {
   return (
     <button
       type="button"
-      className="editor-left-buttons-button"
+      className="editor-left-buttons-button disabled"
       style={{
         background: colorTheme.editorButton,
         boxShadow: `0 1px 1px 1px ${colorTheme.boxShadow}`,
@@ -19,6 +19,7 @@ const ToggleSidebarButton = () => {
         className="editor-left-buttons-button-icon"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
+        fill={colorTheme.icon}
       >
         <path d="M6.505,17.332c-1.288,17.68-1.365,35.441-.197,53.13,.335,5.077,.775,10.146,1.31,15.205,.142,1.343,1.047,2.5,2.5,2.5,1.242,0,2.643-1.149,2.5-2.5-1.863-17.628-2.518-35.378-1.927-53.095,.17-5.085,.444-10.166,.814-15.24,.098-1.348-1.219-2.5-2.5-2.5-1.435,0-2.401,1.148-2.5,2.5h0Z" />
         <path d="M10.836,18.561c9.521-.572,19.042-1.161,28.564-1.713,9.318-.541,18.661-.972,27.994-.603,4.655,.184,9.315,.551,13.922,1.251,2.249,.342,4.518,.708,6.73,1.248,.369,.09,.949,.143,1.139,.456,.105,.173,.029,.608,.032,.806,.01,.747,.006,1.495,.009,2.243,.039,9.635,.078,19.27,.118,28.906,.044,10.881,.089,21.762,.133,32.643,.013,3.217,5.013,3.223,5,0-.082-20.101-.164-40.202-.245-60.303-.009-2.174,.406-4.933-.739-6.898-1.138-1.953-3.346-2.527-5.402-2.951-4.845-.999-9.766-1.65-14.696-2.045-9.705-.778-19.457-.52-29.169-.019-11.134,.575-22.261,1.311-33.39,1.98-3.197,.192-3.219,5.193,0,5h0Z" />

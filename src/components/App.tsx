@@ -16,7 +16,7 @@ const App = () => {
   /*
    * Visibility of sidebar.
    * */
-  const [sidebarIsVisible, setSidebarIsVisible] = useState<boolean>(true)
+  const [sidebarIsVisible, setSidebarIsVisible] = useState<boolean>(false)
 
   /*
    * Width of the sidebar in pixel.
@@ -26,7 +26,7 @@ const App = () => {
   /*
    * Visibility of pageinfo.
    * */
-  const [pageinfoIsVisible, setPageInfoIsVisible] = useState<boolean>(true)
+  const [pageinfoIsVisible, setPageInfoIsVisible] = useState<boolean>(false)
 
   /*
    * Width of pageinfo in pixel.

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled, { Keyframes } from 'styled-components'
+import React, { useRef, useState } from 'react'
 import { useAtom } from 'jotai'
 import { PageUtils } from '../../../apis/page'
 import { blockSelectors } from '../../../jotai-hooks/blocks/selector'
@@ -35,24 +34,13 @@ const Page = () => {
 
   useOnWheelPageEffect(pageRef, setPreviousPageConfig, setPageConfig, throttle)
 
-  const [kf, setKf] = useState<Keyframes>(PageUtils.keyframes(pageRef, sidebarIsOpen, previousPageConfig, pageConfig))
-
-  useEffect(() => {
-    const handleOnResize = () => {
-      setKf(PageUtils.keyframes(pageRef, sidebarIsOpen, previousPageConfig, pageConfig))
-    }
-    setKf(PageUtils.keyframes(pageRef, sidebarIsOpen, previousPageConfig, pageConfig))
-    window.addEventListener('resize', handleOnResize)
-  }, [pageConfig, previousPageConfig, sidebarIsOpen])
-
   return (
     // <div className="editor-page" />
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <StyledPage
+    <div
       id="page"
       className="editor-page"
       ref={pageRef}
-      keyframes={kf}
       onMouseDown={(e) =>
         e.target === pageRef.current
           ? PageUtils.handleOnMouseDown({
@@ -70,16 +58,8 @@ const Page = () => {
       <Blocks />
       <Relations />
       <CursorTSX />
-    </StyledPage>
+    </div>
   )
 }
-
-const StyledPage = styled.div<{ keyframes: Keyframes }>`
-  animation: ${(props) => props.keyframes};
-  //min-width: 960px;
-  //position: absolute;
-  //width: 100%;
-  //z-index: 0;
-`
 
 export default React.memo(Page)

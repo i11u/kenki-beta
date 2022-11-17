@@ -28,19 +28,17 @@ const CursorTSX = () => {
 
   useLayoutEffect(() => {
     if (position.col < 0 || position.col >= gridNum.colNum || position.row < 0 || position.row >= gridNum.rowNum) {
-      window.alert('position is out of range')
       changeCursorPosition(previousPosition)
     }
   }, [changeCursorPosition, gridNum.colNum, gridNum.rowNum, position.col, position.row, previousPosition])
 
   const style = {
-    top: `${position.row * (100 / gridNum.rowNum)}%`,
-    left: `${position.col * (100 / gridNum.colNum)}%`,
-    minWidth: `calc(${100 / gridNum.colNum}% - 1px)`,
-    minHeight: `calc(${100 / gridNum.rowNum}% - 1px)`,
+    top: `${position.row * 30}px`,
+    left: `${position.col * 30}px`,
+    minWidth: '28px',
+    minHeight: '28px',
   }
-
-  return mode === 'EDIT' || mode === 'SELECT' || mode === 'INSERT' ? null : <StyledCursor id="cursor" style={style} />
+  return mode === 'CURSOR' ? <StyledCursor id="cursor" style={style} /> : null
 }
 
 export default CursorTSX

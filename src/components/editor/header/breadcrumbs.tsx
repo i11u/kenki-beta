@@ -1,4 +1,4 @@
-import { colorThemeSelector } from '../../jotai-hooks/colorTheme/selector'
+import { colorThemeSelector } from '../../../jotai-hooks/colorTheme/selector'
 
 const Breadcrumbs = () => {
   let currentPageId: string

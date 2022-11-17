@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@lexical/headless": "^0.6.0",
+    "@lexical/react": "^0.6.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -17,6 +19,8 @@
     "eslint-plugin-neverthrow": "^1.1.4",
     "html-react-parser": "^3.0.4",
     "jotai": "^1.8.0",
+    "katex": "^0.16.3",
+    "lexical": "^0.6.0",
     "neverthrow": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -31,7 +35,9 @@
     "ts-pattern": "^4.0.5",
     "typescript": "^4.4.2",
     "uuid": "^8.3.2",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "y-websocket": "^1.4.5",
+    "yjs": "^13.5.42"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -63,6 +69,7 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
+    "@types/katex": "^0.14.0",
     "@types/recompose": "^0.30.10",
     "@types/styled-components": "^5.1.25",
     "@types/uuid": "^8.3.4",

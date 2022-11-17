@@ -27,6 +27,10 @@ export type ColorTheme = {
   pageTitleText: string
   pageTitleUnderline: string
   collapseMenuBackground: string
+  toolsetHintText: string
+  currentScaleText: string
+  placeholderText: string
+  textBlockText: string
 }
 
 export const light: ColorTheme = {
@@ -56,6 +60,10 @@ export const light: ColorTheme = {
   pageTitleText: '#737869',
   pageTitleUnderline: '#737869',
   collapseMenuBackground: '#F3F2EE',
+  toolsetHintText: '#000000',
+  currentScaleText: '#000000',
+  placeholderText: '#888',
+  textBlockText: '#000000',
 }
 
 export const dark: ColorTheme = {
@@ -79,12 +87,16 @@ export const dark: ColorTheme = {
   commandEven: '#2a2e34',
   blockBorder: 'gray',
   pageinfoBackground: '#373B40',
-  boxShadow: '#ffffff',
+  boxShadow: '#282828',
   background: '#373B40',
   editorButton: '#373B40',
   pageTitleText: '#ffffff',
   pageTitleUnderline: '#ffffff',
   collapseMenuBackground: '#ffffff',
+  toolsetHintText: '#ffffff',
+  currentScaleText: '#ffffff',
+  placeholderText: '#ffffff',
+  textBlockText: '#ffffff',
 }
 
 export const colorThemeAtom = atom<ColorTheme>(light)
